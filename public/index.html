@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home - Daakle Quiz App</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0b0c10;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: #111;
+    }
+    .navbar-brand {
+      color: #4cafef !important;
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+    }
+    .nav-link {
+      transition: color 0.3s ease;
+    }
+    .nav-link:hover {
+      color: #4cafef !important;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(rgba(10, 10, 20, 0.8), rgba(10, 10, 20, 0.8)),
+                  url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1350&q=80") center/cover no-repeat;
+      padding: 140px 20px;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 3.2rem;
+      font-weight: 700;
+      color: #4cafef;
+      animation: fadeInDown 1.2s ease;
+    }
+    .hero p {
+      font-size: 1.3rem;
+      color: #ccc;
+      animation: fadeInUp 1.2s ease;
+    }
+    .hero .btn {
+      border-radius: 30px;
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+    .hero .btn:hover {
+      transform: scale(1.07);
+      box-shadow: 0 0 15px rgba(76, 175, 239, 0.7);
+    }
+
+    /* Features Section */
+    .features {
+      background: #121212;
+      padding: 70px 20px;
+    }
+    .features h2 {
+      color: #4cafef;
+      font-weight: bold;
+      margin-bottom: 40px;
+    }
+    .card {
+      border: none;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(12px);
+      color: #fff;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+    }
+    .card-title {
+      color: #4cafef;
+      font-weight: bold;
+    }
+    .card .fa-solid {
+      color: #4cafef;
+    }
+
+    .btn-primary {
+      background: #4cafef;
+      border: none;
+    }
+    .btn-primary:hover {
+      background: #3a8fcb;
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Footer */
+    footer {
+      background: #111;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold text-uppercase" href="index.html">
+        <i class="fa-solid fa-graduation-cap"></i> DAAKLE
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto" id="navLinks">
+          <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="aptitude.html">Aptitude</a></li>
+          <li class="nav-item"><a class="nav-link" href="learn.html">Learn</a></li>
+          <li class="nav-item"><a class="nav-link" href="test.html">Test</a></li>
+          <li class="nav-item"><a class="nav-link" href="reference.html">Reference</a></li>
+          <li class="nav-item"><a class="nav-link" href="achievements.html">Achievements</a></li>
+          <li class="nav-item"><a class="nav-link" href="schedule.html">Schedule</a></li>
+          <!-- Login/Logout/User will be handled by JS -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero text-white">
+    <div class="container">
+      <h1 class="mb-3">Welcome to DAAKLE Quiz App!</h1>
+      <p class="lead">Prepare, Learn, and Test your Aptitude skills effectively!</p>
+      <a href="learn.html" class="btn btn-success btn-lg mt-3"><i class="fa-solid fa-book-open"></i> Start Learning</a>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features text-white text-center">
+    <div class="container">
+      <h2>🚀 Explore Our Features</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card h-100 p-4">
+            <div class="mb-3"><i class="fa-solid fa-lightbulb fa-2x"></i></div>
+            <h5 class="card-title">Learn Aptitude</h5>
+            <p class="card-text">Master Quantitative, Logical, and Verbal Reasoning with structured lessons.</p>
+            <a href="learn.html" class="btn btn-primary">Learn More</a>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 p-4">
+            <div class="mb-3"><i class="fa-solid fa-pen-ruler fa-2x"></i></div>
+            <h5 class="card-title">Test Your Knowledge</h5>
+            <p class="card-text">Challenge yourself with interactive timed quizzes and real results.</p>
+            <a href="test.html" class="btn btn-primary">Start Test</a>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 p-4">
+            <div class="mb-3"><i class="fa-solid fa-trophy fa-2x"></i></div>
+            <h5 class="card-title">Track Achievements</h5>
+            <p class="card-text">Earn badges as you progress and proudly showcase your milestones.</p>
+            <a href="achievements.html" class="btn btn-primary">View Achievements</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4 mt-2">
+        <div class="col-md-6">
+          <div class="card h-100 p-4">
+            <div class="mb-3"><i class="fa-solid fa-book fa-2x"></i></div>
+            <h5 class="card-title">Helpful References</h5>
+            <p class="card-text">Access curated resources and videos to boost your preparation.</p>
+            <a href="reference.html" class="btn btn-primary">View References</a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card h-100 p-4">
+            <div class="mb-3"><i class="fa-solid fa-calendar-check fa-2x"></i></div>
+            <h5 class="card-title">Weekly Tests</h5>
+            <p class="card-text">Join department-organized weekly quizzes and improve consistently.</p>
+            <a href="test.html" class="btn btn-primary">Join Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center py-4">
+    <p>© 2025 DAAKLE Quiz App | Built for Students, by Students</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Handle login/logout state
+    const navLinks = document.getElementById("navLinks");
+    const username = localStorage.getItem("username");
+
+    if (username) {
+      const li = document.createElement("li");
+      li.className = "nav-item";
+      li.innerHTML = `<a class="nav-link" href="#"><i class="fa-solid fa-user"></i> ${username}</a>`;
+      navLinks.appendChild(li);
+
+      const logoutLi = document.createElement("li");
+      logoutLi.className = "nav-item";
+      logoutLi.innerHTML = `<a class="nav-link text-danger" href="#" onclick="logout()">Logout</a>`;
+      navLinks.appendChild(logoutLi);
+    } else {
+      const loginLi = document.createElement("li");
+      loginLi.className = "nav-item";
+      loginLi.innerHTML = `<a class="nav-link" href="auth.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a>`;
+      navLinks.appendChild(loginLi);
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "auth.html";
+    }
+  </script>
+</body>
+</html>

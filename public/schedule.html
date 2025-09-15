@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schedule - Daakle Quiz App</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background:#111; color:#fff; }
+    .hero {
+      background: linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)), url("https://images.unsplash.com/photo-1503676260728-1c00da094a0b") center/cover;
+      padding: 80px 20px;
+    }
+    .hero h1 { color:#4cafef; font-weight: bold; }
+    .card { background: rgba(255,255,255,0.08); border: none; border-radius: 15px; }
+    .btn-primary { background:#4cafef; border:none; }
+    .btn-primary:hover { background:#3a8fcb; }
+    .schedule-item { background:#222; padding:15px; border-radius:10px; margin-bottom:10px; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold text-uppercase" href="index.html"><i class="fa-solid fa-graduation-cap"></i> DAAKLE</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="aptitude.html">Aptitude</a></li>
+          <li class="nav-item"><a class="nav-link" href="learn.html">Learn</a></li>
+          <li class="nav-item"><a class="nav-link" href="test.html">Test</a></li>
+          <li class="nav-item"><a class="nav-link" href="reference.html">Reference</a></li>
+          <li class="nav-item"><a class="nav-link" href="achievements.html">Achievements</a></li>
+          <li class="nav-item"><a class="nav-link active" href="schedule.html">Schedule</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero text-center text-white">
+    <h1>My Learning Schedule</h1>
+    <p>Plan your study sessions and stay consistent!</p>
+  </section>
+
+  <!-- Schedule Form -->
+  <section class="container py-5">
+    <div class="card p-4">
+      <h3 class="mb-3">Add Study Session</h3>
+      <form id="scheduleForm" class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Topic</label>
+          <input type="text" class="form-control" id="topic" required placeholder="e.g. Algebra">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Date & Time</label>
+          <input type="datetime-local" class="form-control" id="dateTime" required>
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Add to Schedule</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Scheduled Sessions -->
+    <div class="mt-5">
+      <h3>Your Upcoming Sessions</h3>
+      <div id="scheduleList"></div>
+    </div>
+  </section>
+
+  <script>
+    const scheduleForm = document.getElementById("scheduleForm");
+    const scheduleList = document.getElementById("scheduleList");
+
+    let schedules = JSON.parse(localStorage.getItem("schedules")) || [];
+
+    // Render saved schedules
+    function renderSchedules() {
+      scheduleList.innerHTML = "";
+      if (schedules.length === 0) {
+        scheduleList.innerHTML = "<p>No sessions scheduled yet.</p>";
+        return;
+      }
+      schedules.forEach((item, index) => {
+        scheduleList.innerHTML += `
+          <div class="schedule-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>${item.topic}</strong> <br>
+              <small>${new Date(item.dateTime).toLocaleString()}</small>
+            </div>
+            <button class="btn btn-sm btn-danger" onclick="deleteSchedule(${index})">Delete</button>
+          </div>
+        `;
+      });
+    }
+
+    // Add new schedule
+    scheduleForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const topic = document.getElementById("topic").value;
+      const dateTime = document.getElementById("dateTime").value;
+
+      schedules.push({ topic, dateTime });
+      localStorage.setItem("schedules", JSON.stringify(schedules));
+
+      scheduleForm.reset();
+      renderSchedules();
+    });
+
+    // Delete schedule
+    function deleteSchedule(index) {
+      schedules.splice(index, 1);
+      localStorage.setItem("schedules", JSON.stringify(schedules));
+      renderSchedules();
+    }
+
+    renderSchedules();
+  </script>
+</body>
+</html>
