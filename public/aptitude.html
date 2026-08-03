@@ -6,21 +6,543 @@
   <title>Aptitude Topics - DAAKLE</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { background: #111; color: #fff; }
-    .topic-card {
-      background: #1c1c1c; border-radius: 15px; padding: 25px; text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Global Theme */
+    :root {
+      --primary: #4cafef;
+      --primary-dark: #3a8fcb;
+      --secondary: #ff6b6b;
+      --dark: #0a0f24;
+      --darker: #081018;
+      --light: #f0f4ff;
+      --gray: #cfd8e3;
     }
-    .topic-card:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-    .btn-learn { background: #4cafef; border: none; }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: linear-gradient(135deg, var(--dark), var(--darker));
+      color: var(--light);
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--darker);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, var(--primary), var(--primary-dark));
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(to bottom, var(--primary-dark), var(--primary));
+    }
+
+    /* Navbar */
+    .navbar {
+      background: rgba(15, 15, 25, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 15px rgba(76, 175, 239, 0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 15px 0;
+      transition: all 0.3s ease;
+    }
+    
+    .navbar.scrolled {
+      padding: 10px 0;
+      background: rgba(15, 15, 25, 0.98);
+    }
+    
+    .navbar-brand {
+      color: var(--primary) !important;
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .navbar-brand i {
+      margin-right: 10px;
+      font-size: 1.6rem;
+    }
+    
+    .nav-link {
+      color: var(--gray) !important;
+      font-weight: 500;
+      margin: 0 8px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .nav-link:hover {
+      color: var(--primary) !important;
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    
+    .nav-link.active {
+      color: var(--primary) !important;
+    }
+    
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      background: linear-gradient(135deg, rgba(10, 15, 36, 0.9), rgba(8, 16, 24, 0.95));
+      text-align: center;
+      padding: 150px 20px 100px;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%234cafef' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+      animation: float 20s infinite linear;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .hero h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-shadow: 0 0 25px rgba(76, 175, 239, 0.5);
+      margin-bottom: 20px;
+      animation: fadeInDown 1.2s ease;
+    }
+    
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--gray);
+      max-width: 700px;
+      margin: 0 auto 30px;
+      animation: fadeInUp 1.2s ease;
+    }
+
+    /* Section Title */
+    .section-title {
+      text-align: center;
+      margin-bottom: 50px;
+      position: relative;
+    }
+    
+    .section-title h2 {
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 2.2rem;
+      margin-bottom: 15px;
+      display: inline-block;
+      position: relative;
+    }
+    
+    .section-title h2::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 4px;
+      background: var(--primary);
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    /* Topics Section */
+    .topics {
+      background: radial-gradient(circle at top left, #111526, #0a0d1a);
+      padding: 80px 0;
+      position: relative;
+    }
+    
+    .topic-card {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 30px 25px;
+      transition: all 0.4s ease;
+      color: white;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+    
+    .topic-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+    }
+    
+    .topic-card:hover {
+      transform: translateY(-15px) scale(1.03);
+      box-shadow: 0 15px 30px rgba(76, 175, 239, 0.3);
+    }
+    
+    .topic-icon {
+      width: 70px;
+      height: 70px;
+      background: rgba(76, 175, 239, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+    
+    .topic-icon i {
+      font-size: 1.8rem;
+      color: var(--primary);
+    }
+    
+    .topic-card h4 {
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 15px;
+      font-size: 1.4rem;
+    }
+    
+    .topic-card p {
+      color: var(--gray);
+      margin-bottom: 20px;
+    }
+    
+    .btn-learn {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border: none;
+      border-radius: 30px;
+      padding: 10px 25px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      color: white;
+    }
+    
+    .btn-learn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(76, 175, 239, 0.4);
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    }
+
+    /* Difficulty Section */
+    .difficulty {
+      background: rgba(10, 15, 30, 0.7);
+      padding: 80px 0;
+      position: relative;
+    }
+    
+    .difficulty-card {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 30px 25px;
+      transition: all 0.4s ease;
+      color: white;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+    
+    .difficulty-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+    }
+    
+    .difficulty-card.easy::before {
+      background: linear-gradient(to right, #4CAF50, #8BC34A);
+    }
+    
+    .difficulty-card.medium::before {
+      background: linear-gradient(to right, #FF9800, #FFC107);
+    }
+    
+    .difficulty-card.hard::before {
+      background: linear-gradient(to right, #F44336, #E91E63);
+    }
+    
+    .difficulty-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .difficulty-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 1.5rem;
+    }
+    
+    .difficulty-card.easy .difficulty-icon {
+      background: rgba(76, 175, 80, 0.1);
+      color: #4CAF50;
+    }
+    
+    .difficulty-card.medium .difficulty-icon {
+      background: rgba(255, 152, 0, 0.1);
+      color: #FF9800;
+    }
+    
+    .difficulty-card.hard .difficulty-icon {
+      background: rgba(244, 67, 54, 0.1);
+      color: #F44336;
+    }
+    
+    .difficulty-card h4 {
+      font-weight: 600;
+      margin-bottom: 15px;
+      font-size: 1.4rem;
+    }
+    
+    .difficulty-card.easy h4 {
+      color: #4CAF50;
+    }
+    
+    .difficulty-card.medium h4 {
+      color: #FF9800;
+    }
+    
+    .difficulty-card.hard h4 {
+      color: #F44336;
+    }
+    
+    .difficulty-card p {
+      color: var(--gray);
+      margin-bottom: 20px;
+    }
+
+    /* CTA Section */
+    .cta {
+      background: linear-gradient(135deg, rgba(76, 175, 239, 0.1), rgba(255, 107, 107, 0.1));
+      padding: 80px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cta::before {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%234cafef' fill-opacity='0.05' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+      animation: float 30s infinite linear;
+      top: -50%;
+      left: -50%;
+    }
+    
+    .cta-content {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .cta h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 20px;
+    }
+    
+    .cta p {
+      font-size: 1.2rem;
+      color: var(--gray);
+      max-width: 700px;
+      margin: 0 auto 40px;
+    }
+
+    /* Footer */
+    footer {
+      background: rgba(15, 15, 25, 0.95);
+      color: var(--gray);
+      padding: 40px 0 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    
+    .footer-logo {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+    
+    .footer-links {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .footer-links a {
+      color: var(--gray);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+    
+    .social-icons {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .social-icons a {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray);
+      transition: all 0.3s ease;
+    }
+    
+    .social-icons a:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-5px);
+    }
+    
+    .copyright {
+      font-size: 0.9rem;
+      color: rgba(207, 216, 227, 0.7);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 20px;
+      width: 100%;
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes float {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(-10px, -10px) rotate(180deg); }
+      100% { transform: translate(0, 0) rotate(360deg); }
+    }
+    
+    /* Responsive */
+    @media (max-width: 992px) {
+      .hero h1 {
+        font-size: 2.8rem;
+      }
+      
+      .section-title h2 {
+        font-size: 2rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .hero {
+        padding: 130px 20px 80px;
+      }
+      
+      .hero h1 {
+        font-size: 2.3rem;
+      }
+      
+      .hero p {
+        font-size: 1.1rem;
+      }
+      
+      .section-title h2 {
+        font-size: 1.8rem;
+      }
+      
+      .cta h2 {
+        font-size: 2rem;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .navbar-brand {
+        font-size: 1.5rem;
+      }
+      
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .footer-links {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
   </style>
 </head>
 <body>
+
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top">
-    <div class="container-fluid">
-      <a class="navbar-brand fw-bold text-uppercase" href="index.html">
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
         <i class="fa-solid fa-graduation-cap"></i> DAAKLE
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -40,31 +562,372 @@
     </div>
   </nav>
 
-  <div class="container py-5">
-    <h1 class="text-center mb-4">Aptitude & Reasoning Topics</h1>
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="topic-card">
-          <h4>Numbers</h4>
-          <p>Basics of number systems and arithmetic operations.</p>
-          <a href="learn.html#numbers" class="btn btn-learn text-white">Learn</a>
-        </div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Aptitude & Reasoning Topics</h1>
+        <p>Master all aptitude topics with our comprehensive learning materials and practice tests</p>
       </div>
-      <div class="col-md-4">
-        <div class="topic-card">
-          <h4>Ratio & Proportion</h4>
-          <p>Understand ratios and proportions with problem-solving.</p>
-          <a href="learn.html#ratio" class="btn btn-learn text-white">Learn</a>
-        </div>
+    </div>
+  </section>
+
+  <!-- Topics Section -->
+  <section class="topics">
+    <div class="container">
+      <div class="section-title">
+        <h2>📚 Explore Aptitude Topics</h2>
+        <p>Select a topic to start learning and practicing</p>
       </div>
-      <div class="col-md-4">
-        <div class="topic-card">
-          <h4>Logical Reasoning</h4>
-          <p>Enhance problem-solving with logical puzzles.</p>
-          <a href="learn.html#reasoning" class="btn btn-learn text-white">Learn</a>
+      
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+          <div class="topic-card">
+            <div class="topic-icon">
+              <i class="fa-solid fa-calculator"></i>
+            </div>
+            <h4>Numbers</h4>
+            <p>Basics of number systems, arithmetic operations, and number properties.</p>
+            <a href="learn.html#numbers" class="btn btn-learn">Learn Now</a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="topic-card">
+            <div class="topic-icon">
+              <i class="fa-solid fa-scale-balanced"></i>
+            </div>
+            <h4>Ratio & Proportion</h4>
+            <p>Understand ratios, proportions, and their applications in problem-solving.</p>
+            <a href="learn.html#ratio" class="btn btn-learn">Learn Now</a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="topic-card">
+            <div class="topic-icon">
+              <i class="fa-solid fa-brain"></i>
+            </div>
+            <h4>Logical Reasoning</h4>
+            <p>Enhance problem-solving with logical puzzles and analytical thinking.</p>
+            <a href="learn.html#reasoning" class="btn btn-learn">Learn Now</a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="topic-card">
+            <div class="topic-icon">
+              <i class="fa-solid fa-percent"></i>
+            </div>
+            <h4>Percentage</h4>
+            <p>Master percentage calculations and their real-world applications.</p>
+            <a href="learn.html#percentage" class="btn btn-learn">Learn Now</a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="topic-card">
+            <div class="topic-icon">
+              <i class="fa-solid fa-clock"></i>
+            </div>
+            <h4>Time & Work</h4>
+            <p>Learn to solve problems related to time management and work efficiency.</p>
+            <a href="learn.html#timework" class="btn btn-learn">Learn Now</a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="topic-card">
+            <div class="topic-icon">
+              <i class="fa-solid fa-chart-line"></i>
+            </div>
+            <h4>Data Interpretation</h4>
+            <p>Analyze and interpret data from charts, graphs, and tables.</p>
+            <a href="learn.html#data" class="btn btn-learn">Learn Now</a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="topic-card">
+            <div class="topic-icon">
+              <i class="fa-solid fa-puzzle-piece"></i>
+            </div>
+            <h4>Puzzles</h4>
+            <p>Solve various types of puzzles to improve logical thinking.</p>
+            <a href="learn.html#puzzles" class="btn btn-learn">Learn Now</a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="topic-card">
+            <div class="topic-icon">
+              <i class="fa-solid fa-arrow-trend-up"></i>
+            </div>
+            <h4>Profit & Loss</h4>
+            <p>Understand business mathematics with profit and loss calculations.</p>
+            <a href="learn.html#profitloss" class="btn btn-learn">Learn Now</a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="topic-card">
+            <div class="topic-icon">
+              <i class="fa-solid fa-arrows-left-right"></i>
+            </div>
+            <h4>Permutations & Combinations</h4>
+            <p>Learn counting principles and arrangement possibilities.</p>
+            <a href="learn.html#permcomb" class="btn btn-learn">Learn Now</a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
+
+  <!-- Difficulty Section -->
+  <section class="difficulty">
+    <div class="container">
+      <div class="section-title">
+        <h2>🎯 Practice by Difficulty</h2>
+        <p>Choose your challenge level and improve step by step</p>
+      </div>
+      
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+          <div class="difficulty-card easy">
+            <div class="difficulty-icon">
+              <i class="fa-solid fa-seedling"></i>
+            </div>
+            <h4>Beginner Level</h4>
+            <p>Start with fundamental concepts and basic problems to build your foundation.</p>
+            <a href="test.html?difficulty=easy" class="btn btn-learn">Practice Easy</a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="difficulty-card medium">
+            <div class="difficulty-icon">
+              <i class="fa-solid fa-mountain"></i>
+            </div>
+            <h4>Intermediate Level</h4>
+            <p>Challenge yourself with moderately difficult problems and applications.</p>
+            <a href="test.html?difficulty=medium" class="btn btn-learn">Practice Medium</a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="difficulty-card hard">
+            <div class="difficulty-icon">
+              <i class="fa-solid fa-fire"></i>
+            </div>
+            <h4>Advanced Level</h4>
+            <p>Test your skills with complex problems and advanced reasoning challenges.</p>
+            <a href="test.html?difficulty=hard" class="btn btn-learn">Practice Hard</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Ready to Master Aptitude?</h2>
+        <p>Start your learning journey today and improve your reasoning skills with our comprehensive platform</p>
+        <a href="test.html" class="btn btn-learn" style="padding: 12px 35px; font-size: 1.1rem;">
+          <i class="fa-solid fa-play"></i> Start Practice Test
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <i class="fa-solid fa-graduation-cap"></i> DAAKLE
+        </div>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="aptitude.html">Aptitude</a>
+          <a href="learn.html">Learn</a>
+          <a href="test.html">Test</a>
+          <a href="reference.html">Reference</a>
+          <a href="achievements.html">Achievements</a>
+          <a href="schedule.html">Schedule</a>
+        </div>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="copyright">
+          <p>© 2025 DAAKLE Quiz App | Built for Students, by Students</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // User Profile Functions for Navbar - SINGLE SOURCE OF TRUTH
+    function initUserProfile() {
+      const navLinks = document.getElementById("navLinks");
+      const username = localStorage.getItem("username");
+      const email = localStorage.getItem("email");
+
+      // Remove ALL existing user/login elements to avoid duplicates
+      const existingUserItems = document.querySelectorAll('.user-profile-item');
+      existingUserItems.forEach(item => item.remove());
+
+      if (username) {
+        // Create user profile dropdown
+        const userLi = document.createElement("li");
+        userLi.className = "nav-item dropdown user-profile-item";
+        userLi.innerHTML = `
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-user"></i> ${username}
+          </a>
+          <ul class="dropdown-menu user-dropdown">
+            <li><a class="dropdown-item" href="#" onclick="showUserProfile()">
+              <i class="fa-solid fa-user-circle"></i> Profile
+            </a></li>
+            <li><a class="dropdown-item" href="#" onclick="showProgress()">
+              <i class="fa-solid fa-chart-line"></i> My Progress
+            </a></li>
+            <li><a class="dropdown-item" href="#" onclick="showAchievements()">
+              <i class="fa-solid fa-trophy"></i> Achievements
+            </a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="#" onclick="logout()">
+              <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a></li>
+          </ul>
+        `;
+        navLinks.appendChild(userLi);
+      } else {
+        // Create SINGLE login button
+        const loginLi = document.createElement("li");
+        loginLi.className = "nav-item user-profile-item";
+        loginLi.innerHTML = `<a class="nav-link" href="auth.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a>`;
+        navLinks.appendChild(loginLi);
+      }
+    }
+
+    // User Profile Modal
+    function showUserProfile() {
+      const username = localStorage.getItem("username");
+      const email = localStorage.getItem("email");
+      const userId = localStorage.getItem("userId");
+      
+      const profileModal = `
+        <div class="modal fade" id="userProfileModal" tabindex="-1">
+          <div class="modal-dialog">
+            <div class="modal-content" style="background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.08); color: var(--light);">
+              <div class="modal-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                <h5 class="modal-title"><i class="fa-solid fa-user-circle"></i> User Profile</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                <div class="text-center mb-4">
+                  <div class="profile-avatar" style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 2rem; color: white;">
+                    ${username ? username.charAt(0).toUpperCase() : 'U'}
+                  </div>
+                  <h4>${username || 'User'}</h4>
+                  <p class="text-muted">${email || 'No email provided'}</p>
+                </div>
+                
+                <div class="profile-stats">
+                  <div class="row text-center">
+                    <div class="col-4">
+                      <div class="stat-value">${getBadgeCount()}</div>
+                      <div class="stat-label">Badges</div>
+                    </div>
+                    <div class="col-4">
+                      <div class="stat-value">${getTestCount()}</div>
+                      <div class="stat-label">Tests Taken</div>
+                    </div>
+                    <div class="col-4">
+                      <div class="stat-value">${getStudyHours()}</div>
+                      <div class="stat-label">Study Hours</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="editProfile()">Edit Profile</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Add modal to body if not exists
+      if (!document.getElementById('userProfileModal')) {
+        document.body.insertAdjacentHTML('beforeend', profileModal);
+      }
+      
+      // Show modal
+      const modal = new bootstrap.Modal(document.getElementById('userProfileModal'));
+      modal.show();
+    }
+
+    // Helper functions for profile stats
+    function getBadgeCount() {
+      const badges = JSON.parse(localStorage.getItem("badges") || "[]");
+      return badges.length;
+    }
+
+    function getTestCount() {
+      const testResults = JSON.parse(localStorage.getItem("testResults") || "[]");
+      return testResults.length;
+    }
+
+    function getStudyHours() {
+      const schedules = JSON.parse(localStorage.getItem("schedules") || "[]");
+      const completedSessions = schedules.filter(s => s.completed);
+      const totalMinutes = completedSessions.reduce((sum, session) => sum + parseInt(session.duration || 0), 0);
+      return Math.round(totalMinutes / 60);
+    }
+
+    // Progress tracking
+    function showProgress() {
+      alert('Progress tracking feature coming soon!');
+      // You can implement a detailed progress tracking page here
+    }
+
+    // Achievements display
+    function showAchievements() {
+      window.location.href = "achievements.html";
+    }
+
+    // Edit profile function
+    function editProfile() {
+      const username = localStorage.getItem("username");
+      const email = localStorage.getItem("email");
+      
+      const newUsername = prompt("Enter new username:", username);
+      if (newUsername && newUsername.trim() !== '') {
+        localStorage.setItem("username", newUsername.trim());
+        alert('Username updated successfully!');
+        location.reload(); // Refresh to update navbar
+      }
+    }
+
+    // Logout function
+    function logout() {
+      if (confirm("Are you sure you want to logout?")) {
+        localStorage.clear();
+        window.location.href = "index.html";
+      }
+    }
+
+    // Initialize user profile when page loads - THIS IS THE ONLY PLACE WE INITIALIZE THE NAVBAR
+    document.addEventListener('DOMContentLoaded', function() {
+      initUserProfile();
+    });
+</script>
 </body>
 </html>

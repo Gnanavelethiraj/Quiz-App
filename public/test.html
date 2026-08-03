@@ -3,88 +3,2099 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test - Daakle Quiz App</title>
+  <title>Test - DAAKLE Quiz App</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body{ background:#111; color:#fff; }
-    .hero{ background:linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),url("https://images.unsplash.com/photo-1537432376769-00a708388b21") center/cover; padding:80px; }
-    .btn-primary{ background:#4cafef; border:none; }
+    /* Global Theme */
+    :root {
+      --primary: #4cafef;
+      --primary-dark: #3a8fcb;
+      --secondary: #ff6b6b;
+      --success: #4CAF50;
+      --warning: #FF9800;
+      --danger: #F44336;
+      --dark: #0a0f24;
+      --darker: #081018;
+      --light: #f0f4ff;
+      --gray: #cfd8e3;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: linear-gradient(135deg, var(--dark), var(--darker));
+      color: var(--light);
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--darker);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, var(--primary), var(--primary-dark));
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(to bottom, var(--primary-dark), var(--primary));
+    }
+
+    /* Navbar */
+    .navbar {
+      background: rgba(15, 15, 25, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 15px rgba(76, 175, 239, 0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 15px 0;
+      transition: all 0.3s ease;
+    }
+    
+    .navbar.scrolled {
+      padding: 10px 0;
+      background: rgba(15, 15, 25, 0.98);
+    }
+    
+    .navbar-brand {
+      color: var(--primary) !important;
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .navbar-brand i {
+      margin-right: 10px;
+      font-size: 1.6rem;
+    }
+    
+    .nav-link {
+      color: var(--gray) !important;
+      font-weight: 500;
+      margin: 0 8px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .nav-link:hover {
+      color: var(--primary) !important;
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    
+    .nav-link.active {
+      color: var(--primary) !important;
+    }
+    
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      background: linear-gradient(135deg, rgba(10, 15, 36, 0.9), rgba(8, 16, 24, 0.95));
+      text-align: center;
+      padding: 150px 20px 100px;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%234cafef' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+      animation: float 20s infinite linear;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .hero h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-shadow: 0 0 25px rgba(76, 175, 239, 0.5);
+      margin-bottom: 20px;
+      animation: fadeInDown 1.2s ease;
+    }
+    
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--gray);
+      max-width: 700px;
+      margin: 0 auto 30px;
+      animation: fadeInUp 1.2s ease;
+    }
+
+    /* Topic Selection Styles */
+    .topic-selection {
+      background: radial-gradient(circle at top left, #111526, #0a0d1a);
+      padding: 80px 0;
+      position: relative;
+    }
+    
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      margin-top: 40px;
+    }
+    
+    .topic-item {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 30px 25px;
+      transition: all 0.4s ease;
+      color: white;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .topic-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+    }
+    
+    .topic-item:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(76, 175, 239, 0.3);
+    }
+    
+    .topic-icon {
+      width: 80px;
+      height: 80px;
+      background: rgba(76, 175, 239, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+    
+    .topic-icon i {
+      font-size: 2rem;
+      color: var(--primary);
+    }
+    
+    .topic-item h3 {
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 15px;
+      font-size: 1.4rem;
+    }
+    
+    .topic-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+    
+    .stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .stat-value {
+      font-weight: 600;
+      color: var(--light);
+      font-size: 1.1rem;
+    }
+
+    /* Custom Topic Specific Styles */
+    .topic-item.custom-topic {
+      border: 2px dashed var(--warning);
+    }
+    
+    .topic-item.custom-topic::before {
+      background: linear-gradient(to right, var(--warning), var(--secondary));
+    }
+    
+    .topic-item.custom-topic .topic-icon {
+      background: rgba(255, 152, 0, 0.1);
+    }
+    
+    .topic-item.custom-topic .topic-icon i {
+      color: var(--warning);
+    }
+    
+    .topic-item.custom-topic h3 {
+      color: var(--warning);
+    }
+
+    /* Admin Panel Styles */
+    .admin-panel {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 15px;
+      padding: 25px;
+      margin: 30px 0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .question-form {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .option-input {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    
+    .option-input input[type="radio"] {
+      margin: 0;
+    }
+    
+    .questions-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    
+    .question-item {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-left: 4px solid var(--primary);
+    }
+
+    /* Enhanced Bulk Upload Styles */
+    .upload-area {
+      border: 2px dashed var(--primary);
+      border-radius: 15px;
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: rgba(76, 175, 239, 0.05);
+    }
+
+    .upload-area:hover {
+      background: rgba(76, 175, 239, 0.1);
+      border-color: var(--secondary);
+    }
+
+    .upload-area.dragover {
+      background: rgba(76, 175, 239, 0.2);
+      border-color: var(--success);
+      transform: scale(1.02);
+    }
+
+    .upload-progress {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .progress {
+      height: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      background: linear-gradient(135deg, var(--primary), var(--success));
+      transition: width 0.3s ease;
+    }
+
+    .preview-content {
+      background: rgba(255, 255, 255, 0.03);
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+    }
+
+    .question-preview-item {
+      padding: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 10px;
+    }
+
+    .question-preview-item:last-child {
+      border-bottom: none;
+    }
+
+    .valid-question {
+      border-left: 4px solid var(--success);
+      padding-left: 10px;
+    }
+
+    .invalid-question {
+      border-left: 4px solid var(--danger);
+      padding-left: 10px;
+    }
+
+    .admin-tools {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px 0;
+    }
+
+    .tool-item {
+      display: flex;
+      justify-content: between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .tool-item:last-child {
+      border-bottom: none;
+    }
+
+    /* Quiz Section */
+    .quiz-section {
+      background: radial-gradient(circle at top left, #111526, #0a0d1a);
+      padding: 80px 0;
+      position: relative;
+      display: none;
+    }
+    
+    .quiz-container {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 40px 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .quiz-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+    }
+    
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .quiz-title {
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 1.8rem;
+      margin: 0;
+    }
+    
+    .quiz-info {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .info-item {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 8px 15px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .info-item i {
+      color: var(--primary);
+    }
+    
+    .question-counter {
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+    }
+    
+    .question-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .question-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+    
+    .question-text {
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-bottom: 20px;
+      color: var(--light);
+    }
+    
+    .options-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    
+    .option-label {
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .option-label:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .option-label.selected {
+      background: rgba(76, 175, 239, 0.2);
+      border-color: var(--primary);
+    }
+    
+    .option-label input {
+      margin-right: 15px;
+      transform: scale(1.2);
+    }
+    
+    .quiz-controls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .btn-quiz {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border: none;
+      border-radius: 30px;
+      padding: 12px 30px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .btn-quiz:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(76, 175, 239, 0.4);
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    }
+    
+    .btn-quiz:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .btn-outline-quiz {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .btn-outline-quiz:hover {
+      background: rgba(76, 175, 239, 0.1);
+    }
+
+    /* Result Section */
+    .result-section {
+      display: none;
+      background: rgba(10, 15, 30, 0.7);
+      padding: 80px 0;
+      position: relative;
+    }
+    
+    .result-container {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 40px 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .result-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+    }
+    
+    .result-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+    }
+    
+    .result-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+    
+    .result-score {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin: 20px 0;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .result-message {
+      font-size: 1.2rem;
+      color: var(--gray);
+      margin-bottom: 30px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .badge-earned {
+      background: rgba(76, 175, 239, 0.2);
+      border: 1px solid var(--primary);
+      border-radius: 30px;
+      padding: 15px 25px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin: 20px 0;
+      font-weight: 600;
+    }
+    
+    .result-actions {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+
+    /* Footer */
+    footer {
+      background: rgba(15, 15, 25, 0.95);
+      color: var(--gray);
+      padding: 40px 0 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    
+    .footer-logo {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+    
+    .footer-links {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .footer-links a {
+      color: var(--gray);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+    
+    .social-icons {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .social-icons a {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray);
+      transition: all 0.3s ease;
+    }
+    
+    .social-icons a:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-5px);
+    }
+    
+    .copyright {
+      font-size: 0.9rem;
+      color: rgba(207, 216, 227, 0.7);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 20px;
+      width: 100%;
+    }
+
+    /* Custom Notification */
+    .custom-notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      min-width: 300px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      border: none;
+      border-radius: 10px;
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes float {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(-10px, -10px) rotate(180deg); }
+      100% { transform: translate(0, 0) rotate(360deg); }
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    /* Responsive */
+    @media (max-width: 992px) {
+      .hero h1 {
+        font-size: 2.8rem;
+      }
+      
+      .quiz-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .quiz-info {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .hero {
+        padding: 130px 20px 80px;
+      }
+      
+      .hero h1 {
+        font-size: 2.3rem;
+      }
+      
+      .hero p {
+        font-size: 1.1rem;
+      }
+      
+      .quiz-controls {
+        flex-direction: column;
+      }
+      
+      .btn-quiz {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .result-actions {
+        flex-direction: column;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .navbar-brand {
+        font-size: 1.5rem;
+      }
+      
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .quiz-container {
+        padding: 25px 20px;
+      }
+      
+      .question-card {
+        padding: 20px;
+      }
+      
+      .option-label {
+        padding: 12px 15px;
+      }
+      
+      .footer-links {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
   </style>
 </head>
 <body>
+
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top">
-    <div class="container-fluid">
-      <a class="navbar-brand fw-bold text-uppercase" href="index.html">DAAKLE</a>
-      <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav"><span class="navbar-toggler-icon"></span></button>
-      <div class="collapse navbar-collapse" id="nav">
-        <ul class="navbar-nav ms-auto">
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <i class="fa-solid fa-graduation-cap"></i> DAAKLE
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto" id="navLinks">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="aptitude.html">Aptitude</a></li>
           <li class="nav-item"><a class="nav-link" href="learn.html">Learn</a></li>
           <li class="nav-item"><a class="nav-link active" href="test.html">Test</a></li>
+          <li class="nav-item"><a class="nav-link" href="reference.html">Reference</a></li>
           <li class="nav-item"><a class="nav-link" href="achievements.html">Achievements</a></li>
+          <li class="nav-item"><a class="nav-link" href="schedule.html">Schedule</a></li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- Hero -->
-  <section class="hero text-center text-white">
-    <h1>Take a Test</h1>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Test Your Knowledge</h1>
+        <p>Challenge yourself with our aptitude tests and track your progress</p>
+      </div>
+    </div>
   </section>
 
-  <!-- Quiz -->
-  <section class="container py-5">
-    <h2 id="topicName"></h2>
-    <div id="quiz"></div>
-    <button class="btn btn-primary mt-3" onclick="submitQuiz()">Submit</button>
-    <p id="result" class="mt-3"></p>
+  <!-- Topic Selection Section -->
+  <section class="topic-selection" id="topicSelection">
+    <div class="container">
+      <div class="section-title">
+        <h2>📝 Choose Your Test Topic</h2>
+        <p>Select a topic to start your assessment. Questions are randomly selected each time!</p>
+      </div>
+      
+      <div class="topic-grid" id="topicGrid">
+        <!-- Topics will be dynamically loaded -->
+      </div>
+
+      <!-- Admin Panel (Visible only to admin users) -->
+      <div class="admin-panel" id="adminPanel" style="display: none;">
+        <div class="admin-header">
+          <h3><i class="fa-solid fa-shield"></i> Question Management</h3>
+          <div class="d-flex gap-2 flex-wrap">
+            <button class="btn btn-primary" onclick="toggleQuestionForm()">
+              <i class="fa-solid fa-plus"></i> Add Single Question
+            </button>
+            <button class="btn btn-info" onclick="toggleBulkUpload()">
+              <i class="fa-solid fa-upload"></i> Bulk Upload
+            </button>
+          </div>
+        </div>
+        
+        <div class="question-form" id="questionForm" style="display: none;">
+          <h4>Add New Question</h4>
+          <div class="mb-3">
+            <label class="form-label">Topic</label>
+            <select class="form-control" id="adminTopic">
+              <option value="numbers">Numbers</option>
+              <option value="lcmhcf">LCM & HCF</option>
+              <option value="algebra">Algebra</option>
+              <option value="percentage">Percentage</option>
+              <option value="ratio">Ratio & Proportion</option>
+              <option value="timework">Time & Work</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Question</label>
+            <textarea class="form-control" id="adminQuestion" rows="3" placeholder="Enter the question..."></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Options</label>
+            <div class="option-input">
+              <input type="radio" name="correctOption" value="0" checked>
+              <input type="text" class="form-control" id="option0" placeholder="Option A">
+            </div>
+            <div class="option-input">
+              <input type="radio" name="correctOption" value="1">
+              <input type="text" class="form-control" id="option1" placeholder="Option B">
+            </div>
+            <div class="option-input">
+              <input type="radio" name="correctOption" value="2">
+              <input type="text" class="form-control" id="option2" placeholder="Option C">
+            </div>
+            <div class="option-input">
+              <input type="radio" name="correctOption" value="3">
+              <input type="text" class="form-control" id="option3" placeholder="Option D">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Explanation</label>
+            <textarea class="form-control" id="adminExplanation" rows="2" placeholder="Enter explanation..."></textarea>
+          </div>
+          <button class="btn btn-success" onclick="addQuestion()">
+            <i class="fa-solid fa-save"></i> Save Question
+          </button>
+          <button class="btn btn-secondary" onclick="toggleQuestionForm()">Cancel</button>
+        </div>
+
+        <!-- Enhanced Bulk Upload Section -->
+        <div class="bulk-upload" id="bulkUpload" style="display: none;">
+          <div class="admin-header">
+            <h4><i class="fa-solid fa-upload"></i> Bulk Question Upload</h4>
+            <div class="d-flex gap-2 flex-wrap">
+              <button class="btn btn-info" onclick="downloadTemplate()">
+                <i class="fa-solid fa-download"></i> Download Template
+              </button>
+              <button class="btn btn-warning" onclick="exportQuestions()">
+                <i class="fa-solid fa-file-export"></i> Export Questions
+              </button>
+              <button class="btn btn-danger" onclick="clearAllQuestions()">
+                <i class="fa-solid fa-trash"></i> Clear All
+              </button>
+            </div>
+          </div>
+          
+          <div class="upload-options mb-4">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="upload-area" onclick="document.getElementById('jsonFile').click()" id="dropZone">
+                  <i class="fa-solid fa-file-import fa-3x mb-3"></i>
+                  <h5>Click to Upload JSON File</h5>
+                  <p class="text-muted">or drag and drop your file here</p>
+                  <small class="text-info">Supports .json files only</small>
+                  <input type="file" id="jsonFile" accept=".json" style="display: none;" onchange="handleFileUpload(this.files[0])">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded h-100">
+                  <h6><i class="fa-solid fa-keyboard"></i> Manual Input</h6>
+                  <label class="form-label">Paste JSON data:</label>
+                  <textarea class="form-control" id="jsonInput" rows="8" 
+                            placeholder='[{"topic": "numbers", "q": "Question?", "options": ["A", "B", "C", "D"], "correct": 0, "explanation": "Explanation"}]'></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Upload Progress -->
+          <div class="upload-progress" id="uploadProgress" style="display: none;">
+            <div class="progress mb-2">
+              <div class="progress-bar" id="progressBar" role="progressbar" style="width: 0%"></div>
+            </div>
+            <div class="text-center">
+              <span id="progressText">Processing...</span>
+            </div>
+          </div>
+
+          <!-- JSON Preview -->
+          <div class="json-preview mt-4" id="jsonPreview" style="display: none;">
+            <h6><i class="fa-solid fa-eye"></i> Preview</h6>
+            <div class="preview-content border rounded p-3" id="previewContent" style="max-height: 200px; overflow-y: auto;"></div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="d-flex gap-2 mt-4 flex-wrap">
+            <button class="btn btn-success" onclick="uploadBulkQuestions()" id="uploadBtn">
+              <i class="fa-solid fa-upload"></i> Upload Questions
+            </button>
+            <button class="btn btn-info" onclick="previewJSON()">
+              <i class="fa-solid fa-eye"></i> Preview
+            </button>
+            <button class="btn btn-secondary" onclick="toggleBulkUpload()">Cancel</button>
+          </div>
+        </div>
+
+        <div class="questions-list" id="questionsList">
+          <!-- Questions will be listed here -->
+        </div>
+      </div>
+    </div>
   </section>
 
+  <!-- Quiz Section (Initially Hidden) -->
+  <section class="quiz-section" id="quizSection">
+    <div class="container">
+      <div class="quiz-container">
+        <div class="quiz-header">
+          <h2 class="quiz-title" id="topicName">Numbers Test</h2>
+          <div class="quiz-info">
+            <div class="info-item">
+              <i class="fa-solid fa-clock"></i>
+              <span id="timer">10:00</span>
+            </div>
+            <div class="info-item">
+              <i class="fa-solid fa-list-ol"></i>
+              <span id="questionCount">5 Questions</span>
+            </div>
+            <div class="info-item">
+              <i class="fa-solid fa-star"></i>
+              <span id="difficulty">Medium</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="question-counter">
+          Question <span id="currentQuestion">1</span> of <span id="totalQuestions">5</span>
+        </div>
+        
+        <div id="quiz">
+          <!-- Questions will be dynamically inserted here -->
+        </div>
+        
+        <div class="quiz-controls">
+          <button class="btn btn-outline-quiz" id="prevBtn" onclick="prevQuestion()" disabled>
+            <i class="fa-solid fa-arrow-left"></i> Previous
+          </button>
+          <button class="btn btn-quiz" id="nextBtn" onclick="nextQuestion()">
+            Next <i class="fa-solid fa-arrow-right"></i>
+          </button>
+          <button class="btn btn-quiz" id="submitBtn" onclick="submitQuiz()" style="display: none;">
+            <i class="fa-solid fa-paper-plane"></i> Submit Test
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Result Section -->
+  <section class="result-section" id="resultSection">
+    <div class="container">
+      <div class="result-container">
+        <div class="result-icon" id="resultIcon">
+          <i class="fa-solid fa-trophy"></i>
+        </div>
+        <h2 class="result-title" id="resultTitle">Congratulations!</h2>
+        <div class="result-score" id="resultScore">8/10</div>
+        <p class="result-message" id="resultMessage">You've successfully completed the test with an excellent score!</p>
+        
+        <div class="badge-earned" id="badgeEarned" style="display: none;">
+          <i class="fa-solid fa-medal"></i>
+          <span>You've earned a new badge!</span>
+        </div>
+        
+        <div class="result-actions">
+          <button class="btn btn-quiz" onclick="showTopicSelection()">
+            <i class="fa-solid fa-rotate"></i> Try Another Test
+          </button>
+          <a href="learn.html" class="btn btn-outline-quiz">
+            <i class="fa-solid fa-book"></i> Review Topics
+          </a>
+          <a href="achievements.html" class="btn btn-outline-quiz">
+            <i class="fa-solid fa-trophy"></i> View Achievements
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <i class="fa-solid fa-graduation-cap"></i> DAAKLE
+        </div>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="aptitude.html">Aptitude</a>
+          <a href="learn.html">Learn</a>
+          <a href="test.html">Test</a>
+          <a href="reference.html">Reference</a>
+          <a href="achievements.html">Achievements</a>
+          <a href="schedule.html">Schedule</a>
+        </div>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="copyright">
+          <p>© 2025 DAAKLE Quiz App | Built for Students, by Students</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Admin Access Button -->
+  <button class="btn btn-warning" onclick="enableAdminMode()" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+    <i class="fa-solid fa-shield"></i> Admin Access
+  </button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const topic = urlParams.get("topic") || "numbers";
-    document.getElementById("topicName").textContent = topic.toUpperCase() + " Test";
+    // Backend API (MongoDB-backed questions). Falls back to the built-in
+    // defaultQuestions below if the server is unreachable.
+    const API_URL = "http://localhost:5000/api";
+    let backendQuestions = {}; // populated from MongoDB via /api/questions
 
-    const questions = {
+    // Fetch every topic's questions from the backend in one call and
+    // re-render the topic grid once they arrive.
+    async function loadBackendQuestions() {
+      try {
+        const res = await fetch(`${API_URL}/questions`);
+        if (res.ok) {
+          backendQuestions = await res.json();
+          renderTopicSelection();
+        }
+      } catch (err) {
+        // Server not running / unreachable — silently fall back to
+        // defaultQuestions + any locally saved admin questions.
+        console.warn("Could not reach backend for questions, using local data:", err);
+      }
+    }
+
+    // Quiz state
+    let currentTopic = "";
+    let currentQuestionIndex = 0;
+    let userAnswers = [];
+    let timerInterval;
+    let timeLeft = 600; // 10 minutes in seconds
+    let currentQuestions = [];
+
+    // Default questions (fallback if backend and admin questions are unavailable)
+    const defaultQuestions = {
       numbers: [
-        {q:"2+2=?",a:"4",options:["3","4","5"]},
-        {q:"Prime after 7?",a:"11",options:["9","11","13"]}
+        {
+          q: "What is the sum of the first 10 prime numbers?",
+          options: ["101", "129", "139", "149"],
+          correct: 1,
+          explanation: "The first 10 prime numbers are: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29. Their sum is 129."
+        }
       ],
       lcmhcf: [
-        {q:"LCM of 4 and 6?",a:"12",options:["10","12","24"]}
+        {
+          q: "What is the LCM of 12 and 18?",
+          options: ["24", "36", "48", "72"],
+          correct: 1,
+          explanation: "Prime factors: 12 = 2²×3, 18 = 2×3². LCM = 2²×3² = 4×9 = 36."
+        }
       ],
       algebra: [
-        {q:"x+2=5, x=?",a:"3",options:["2","3","5"]}
+        {
+          q: "If 2x + 5 = 15, what is the value of x?",
+          options: ["3", "5", "7", "10"],
+          correct: 1,
+          explanation: "2x + 5 = 15 → 2x = 10 → x = 5."
+        }
+      ],
+      percentage: [
+        {
+          q: "What is 25% of 200?",
+          options: ["25", "50", "75", "100"],
+          correct: 1,
+          explanation: "25% of 200 = (25/100) × 200 = 0.25 × 200 = 50."
+        }
+      ],
+      ratio: [
+        {
+          q: "If a:b = 2:3 and b:c = 4:5, what is a:b:c?",
+          options: ["8:12:15", "2:3:5", "4:6:5", "6:4:5"],
+          correct: 0,
+          explanation: "a:b = 2:3 = 8:12, b:c = 4:5 = 12:15, so a:b:c = 8:12:15"
+        }
+      ],
+      timework: [
+        {
+          q: "A can complete a work in 10 days, B in 15 days. In how many days will they complete it together?",
+          options: ["5 days", "6 days", "8 days", "12 days"],
+          correct: 1,
+          explanation: "A's 1 day work = 1/10, B's 1 day work = 1/15, Together = 1/10 + 1/15 = 1/6, so 6 days"
+        }
+      ],
+      custom: [
+        {
+          q: "Welcome to Custom Questions! Add your own questions in the admin panel.",
+          options: ["Start creating!", "Explore topics", "Learn more", "Get started"],
+          correct: 0,
+          explanation: "Use the admin panel to add your own custom questions to this topic."
+        }
       ]
     };
 
-    const quizDiv=document.getElementById("quiz");
-    questions[topic].forEach((item,i)=>{
-      let html=`<div class="mb-3"><p>${i+1}. ${item.q}</p>`;
-      item.options.forEach(opt=>{
-        html+=`<label><input type="radio" name="q${i}" value="${opt}"> ${opt}</label><br>`;
-      });
-      html+="</div>";
-      quizDiv.innerHTML+=html;
-    });
+    // Topic data
+    const topicData = {
+      numbers: { name: "Numbers", icon: "fa-calculator", description: "Number systems, primes, divisibility" },
+      lcmhcf: { name: "LCM & HCF", icon: "fa-divide", description: "Least common multiple & highest common factor" },
+      algebra: { name: "Algebra", icon: "fa-square-root-variable", description: "Equations, expressions, formulas" },
+      percentage: { name: "Percentage", icon: "fa-percent", description: "Percentage calculations and applications" },
+      ratio: { name: "Ratio & Proportion", icon: "fa-scale-balanced", description: "Ratios, proportions, and variations" },
+      timework: { name: "Time & Work", icon: "fa-clock", description: "Work efficiency and time management" },
+      custom: { name: "Custom", icon: "fa-puzzle-piece", description: "Your own custom questions and topics" }
+    };
 
-    function submitQuiz(){
-      let score=0;
-      questions[topic].forEach((item,i)=>{
-        const ans=document.querySelector(`input[name="q${i}"]:checked`);
-        if(ans && ans.value===item.a) score++;
+    // Initialize the page
+    function initPage() {
+      loadAdminQuestions();
+      renderTopicSelection();
+      loadBackendQuestions(); // async - re-renders topic grid once loaded
+      checkAdminAccess();
+      initUserProfile();
+      initializeDragAndDrop();
+    }
+
+    // Load questions from localStorage (admin added questions)
+    function loadAdminQuestions() {
+      const adminQuestions = JSON.parse(localStorage.getItem("adminQuestions")) || {};
+      return adminQuestions;
+    }
+
+    // Get questions for a topic (random selection)
+    function getQuestionsForTopic(topic) {
+      const adminQuestions = loadAdminQuestions();
+      const topicQuestions = adminQuestions[topic] || [];
+      const backendTopicQuestions = backendQuestions[topic] || [];
+      const defaultTopicQuestions = defaultQuestions[topic] || [];
+      
+      // Combine backend (MongoDB), locally-saved admin, and built-in default questions
+      const allQuestions = [...backendTopicQuestions, ...topicQuestions, ...defaultTopicQuestions];
+      
+      if (allQuestions.length === 0) {
+        return [];
+      }
+      
+      // Select random questions (max 10)
+      const numQuestions = Math.min(10, allQuestions.length);
+      const shuffled = allQuestions.sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, numQuestions);
+    }
+
+    // Render topic selection grid
+    function renderTopicSelection() {
+      const topicGrid = document.getElementById("topicGrid");
+      let html = '';
+      
+      Object.keys(topicData).forEach(topic => {
+        const topicInfo = topicData[topic];
+        const questions = getQuestionsForTopic(topic);
+        const questionCount = questions.length;
+        
+        // Add custom class for custom topic
+        const customClass = topic === 'custom' ? 'custom-topic' : '';
+        
+        html += `
+          <div class="topic-item ${customClass}" onclick="startTest('${topic}')">
+            <div class="topic-icon">
+              <i class="fa-solid ${topicInfo.icon}"></i>
+            </div>
+            <h3>${topicInfo.name}</h3>
+            <p>${topicInfo.description}</p>
+            <div class="topic-stats">
+              <div class="stat">
+                <span class="stat-value">${questionCount}</span>
+                <span>Questions</span>
+              </div>
+              <div class="stat">
+                <span class="stat-value">${getTopicDifficulty(topic)}</span>
+                <span>Difficulty</span>
+              </div>
+              <div class="stat">
+                <span class="stat-value">${getUserScore(topic)}%</span>
+                <span>Your Score</span>
+              </div>
+            </div>
+          </div>
+        `;
       });
-      const result=document.getElementById("result");
-      if(score===questions[topic].length){
-        result.textContent="🎉 Passed! Badge Earned!";
-        let badges=JSON.parse(localStorage.getItem("badges")||"[]");
-        if(!badges.includes(topic)) badges.push(topic);
-        localStorage.setItem("badges",JSON.stringify(badges));
-      }else{
-        result.textContent=`You scored ${score}/${questions[topic].length}. Try again!`;
+      
+      topicGrid.innerHTML = html;
+    }
+
+    // Enhanced Bulk Upload Functions
+    function toggleBulkUpload() {
+        const bulkUpload = document.getElementById("bulkUpload");
+        const questionForm = document.getElementById("questionForm");
+        bulkUpload.style.display = bulkUpload.style.display === "none" ? "block" : "none";
+        questionForm.style.display = "none";
+        resetBulkUploadForm();
+    }
+
+    function resetBulkUploadForm() {
+        document.getElementById("jsonInput").value = "";
+        document.getElementById("jsonPreview").style.display = "none";
+        document.getElementById("uploadProgress").style.display = "none";
+        document.getElementById("progressBar").style.width = "0%";
+        document.getElementById("progressText").textContent = "Processing...";
+    }
+
+    // Drag and drop functionality
+    function initializeDragAndDrop() {
+        const dropZone = document.getElementById('dropZone');
+        
+        dropZone.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        
+        dropZone.addEventListener('dragleave', function() {
+            this.classList.remove('dragover');
+        });
+        
+        dropZone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileUpload(files[0]);
+            }
+        });
+    }
+
+    function handleFileUpload(file) {
+        if (!file) return;
+        
+        // Validate file type
+        if (!file.name.endsWith('.json')) {
+            showNotification('Please upload a JSON file only!', 'error');
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById("jsonInput").value = e.target.result;
+            previewJSON();
+        };
+        reader.onerror = function() {
+            showNotification('Error reading file!', 'error');
+        };
+        reader.readAsText(file);
+    }
+
+    function previewJSON() {
+        const jsonInput = document.getElementById("jsonInput").value;
+        if (!jsonInput.trim()) {
+            showNotification("Please enter JSON data", "warning");
+            return;
+        }
+        
+        try {
+            const questions = JSON.parse(jsonInput);
+            const preview = document.getElementById("previewContent");
+            let validCount = 0;
+            let invalidCount = 0;
+            
+            let html = `<div class="mb-3"><strong>Found ${questions.length} questions:</strong></div>`;
+            
+            questions.forEach((q, index) => {
+                const isValid = validateQuestion(q);
+                if (isValid) {
+                    validCount++;
+                    html += `
+                        <div class="question-preview-item valid-question">
+                            <div class="d-flex justify-content-between">
+                                <strong>Q${index + 1}: ${q.q.substring(0, 60)}${q.q.length > 60 ? '...' : ''}</strong>
+                                <span class="badge bg-success">Valid</span>
+                            </div>
+                            <small class="text-muted">Topic: ${q.topic} | Options: ${q.options.length}</small>
+                        </div>
+                    `;
+                } else {
+                    invalidCount++;
+                    html += `
+                        <div class="question-preview-item invalid-question">
+                            <div class="d-flex justify-content-between">
+                                <strong>Q${index + 1}: ${q.q ? q.q.substring(0, 60) + (q.q.length > 60 ? '...' : '') : 'INVALID QUESTION'}</strong>
+                                <span class="badge bg-danger">Invalid</span>
+                            </div>
+                            <small class="text-danger">Missing required fields</small>
+                        </div>
+                    `;
+                }
+            });
+            
+            html += `<div class="mt-3">
+                <span class="badge bg-success">${validCount} Valid</span>
+                <span class="badge bg-danger">${invalidCount} Invalid</span>
+            </div>`;
+            
+            preview.innerHTML = html;
+            document.getElementById("jsonPreview").style.display = "block";
+            
+        } catch (e) {
+            document.getElementById("previewContent").innerHTML = 
+                `<div class="text-danger"><i class="fa-solid fa-times"></i> Invalid JSON format: ${e.message}</div>`;
+            document.getElementById("jsonPreview").style.display = "block";
+        }
+    }
+
+    function validateQuestion(question) {
+        return question && 
+               question.topic && 
+               question.q && 
+               question.q.trim().length > 0 &&
+               Array.isArray(question.options) && 
+               question.options.length >= 2 &&
+               question.options.every(opt => opt && opt.trim().length > 0) &&
+               typeof question.correct === 'number' && 
+               question.correct >= 0 && 
+               question.correct < question.options.length;
+    }
+
+    function uploadBulkQuestions() {
+        const jsonInput = document.getElementById("jsonInput").value;
+        if (!jsonInput.trim()) {
+            showNotification("Please enter JSON data", "warning");
+            return;
+        }
+        
+        try {
+            const newQuestions = JSON.parse(jsonInput);
+            const adminQuestions = JSON.parse(localStorage.getItem("adminQuestions")) || {};
+            let addedCount = 0;
+            let errorCount = 0;
+            let skippedCount = 0;
+            
+            // Show progress
+            const progressBar = document.getElementById("progressBar");
+            const progressText = document.getElementById("progressText");
+            const uploadProgress = document.getElementById("uploadProgress");
+            const uploadBtn = document.getElementById("uploadBtn");
+            
+            uploadProgress.style.display = "block";
+            uploadBtn.disabled = true;
+            
+            // Process questions with progress updates
+            newQuestions.forEach((question, index) => {
+                const progress = ((index + 1) / newQuestions.length) * 100;
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `Processing question ${index + 1} of ${newQuestions.length}`;
+                
+                if (!validateQuestion(question)) {
+                    errorCount++;
+                    return;
+                }
+                
+                // Check for duplicates
+                const existingQuestions = adminQuestions[question.topic] || [];
+                const isDuplicate = existingQuestions.some(existingQ => 
+                    existingQ.q === question.q
+                );
+                
+                if (isDuplicate) {
+                    skippedCount++;
+                    return;
+                }
+                
+                if (!adminQuestions[question.topic]) {
+                    adminQuestions[question.topic] = [];
+                }
+                
+                adminQuestions[question.topic].push({
+                    q: question.q.trim(),
+                    options: question.options.map(opt => opt.trim()),
+                    correct: question.correct,
+                    explanation: question.explanation || "",
+                    difficulty: question.difficulty || "medium",
+                    addedDate: new Date().toISOString()
+                });
+                addedCount++;
+            });
+            
+            // Save to localStorage
+            localStorage.setItem("adminQuestions", JSON.stringify(adminQuestions));
+            
+            // Reset form and update UI
+            resetBulkUploadForm();
+            loadQuestionsList();
+            renderTopicSelection();
+            
+            // Show result
+            let message = `Successfully uploaded ${addedCount} questions!`;
+            if (errorCount > 0) message += ` ${errorCount} questions had errors.`;
+            if (skippedCount > 0) message += ` ${skippedCount} duplicates skipped.`;
+            
+            showNotification(message, "success");
+            
+        } catch (e) {
+            showNotification("Error uploading questions: " + e.message, "error");
+        } finally {
+            const uploadBtn = document.getElementById("uploadBtn");
+            if (uploadBtn) uploadBtn.disabled = false;
+        }
+    }
+
+    function downloadTemplate() {
+        const template = [
+            {
+                "topic": "numbers",
+                "q": "What is the sum of the first 5 prime numbers?",
+                "options": ["18", "28", "38", "48"],
+                "correct": 1,
+                "explanation": "First 5 primes: 2, 3, 5, 7, 11. Sum = 28",
+                "difficulty": "easy"
+            },
+            {
+                "topic": "custom",
+                "q": "This is a sample custom question",
+                "options": ["Option A", "Option B", "Option C", "Option D"],
+                "correct": 0,
+                "explanation": "This is how you can add custom questions",
+                "difficulty": "medium"
+            }
+        ];
+        
+        const dataStr = JSON.stringify(template, null, 2);
+        const dataBlob = new Blob([dataStr], {type: "application/json"});
+        
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(dataBlob);
+        link.download = "daakle-questions-template.json";
+        link.click();
+        
+        showNotification("Template downloaded successfully!", "info");
+    }
+
+    function exportQuestions() {
+        const adminQuestions = JSON.parse(localStorage.getItem("adminQuestions")) || {};
+        
+        // Flatten questions array for export
+        const exportData = [];
+        Object.keys(adminQuestions).forEach(topic => {
+            adminQuestions[topic].forEach(question => {
+                exportData.push({
+                    topic: topic,
+                    q: question.q,
+                    options: question.options,
+                    correct: question.correct,
+                    explanation: question.explanation,
+                    difficulty: question.difficulty
+                });
+            });
+        });
+        
+        if (exportData.length === 0) {
+            showNotification("No questions to export!", "warning");
+            return;
+        }
+        
+        const dataStr = JSON.stringify(exportData, null, 2);
+        const dataBlob = new Blob([dataStr], {type: "application/json"});
+        
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(dataBlob);
+        link.download = `daakle-questions-backup-${new Date().toISOString().split('T')[0]}.json`;
+        link.click();
+        
+        showNotification(`Exported ${exportData.length} questions successfully!`, "success");
+    }
+
+    function clearAllQuestions() {
+        if (confirm("⚠️ ARE YOU SURE?\n\nThis will delete ALL custom questions and cannot be undone!\n\nOnly default questions will remain.")) {
+            localStorage.removeItem("adminQuestions");
+            loadQuestionsList();
+            renderTopicSelection();
+            showNotification("All custom questions have been cleared!", "info");
+        }
+    }
+
+    // Enhanced notification system
+    function showNotification(message, type = "info") {
+        // Remove existing notifications
+        const existingNotifications = document.querySelectorAll('.custom-notification');
+        existingNotifications.forEach(notif => notif.remove());
+        
+        const notification = document.createElement('div');
+        notification.className = `custom-notification alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show`;
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border: none;
+            border-radius: 10px;
+        `;
+        
+        notification.innerHTML = `
+            <strong>${type.charAt(0).toUpperCase() + type.slice(1)}!</strong> ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.remove();
+            }
+        }, 5000);
+    }
+
+    // Start test with selected topic
+    function startTest(topic) {
+      currentTopic = topic;
+      currentQuestions = getQuestionsForTopic(topic);
+      
+      if (currentQuestions.length === 0) {
+        alert('No questions available for this topic yet!');
+        return;
+      }
+      
+      // Hide topic selection, show quiz
+      document.getElementById('topicSelection').style.display = 'none';
+      document.getElementById('quizSection').style.display = 'block';
+      document.getElementById('resultSection').style.display = 'none';
+      
+      // Initialize quiz
+      currentQuestionIndex = 0;
+      userAnswers = new Array(currentQuestions.length).fill(null);
+      timeLeft = 600; // 10 minutes
+      
+      // Set topic name
+      document.getElementById("topicName").textContent = topicData[topic].name + " Test";
+      document.getElementById("questionCount").textContent = `${currentQuestions.length} Questions`;
+      document.getElementById("totalQuestions").textContent = currentQuestions.length;
+      
+      // Start timer and display first question
+      startTimer();
+      displayQuestion();
+      updateNavButtons();
+    }
+
+    // Show topic selection (from results)
+    function showTopicSelection() {
+      document.getElementById('topicSelection').style.display = 'block';
+      document.getElementById('quizSection').style.display = 'none';
+      document.getElementById('resultSection').style.display = 'none';
+      renderTopicSelection();
+    }
+
+    // Admin Functions
+    function checkAdminAccess() {
+      const isAdmin = localStorage.getItem("isAdmin") === "true";
+      if (isAdmin) {
+        document.getElementById("adminPanel").style.display = "block";
+        loadQuestionsList();
       }
     }
+
+    function toggleQuestionForm() {
+      const form = document.getElementById("questionForm");
+      form.style.display = form.style.display === "none" ? "block" : "none";
+    }
+
+    async function addQuestion() {
+      const topic = document.getElementById("adminTopic").value;
+      const question = document.getElementById("adminQuestion").value;
+      const options = [
+        document.getElementById("option0").value,
+        document.getElementById("option1").value,
+        document.getElementById("option2").value,
+        document.getElementById("option3").value
+      ];
+      const correctOption = parseInt(document.querySelector('input[name="correctOption"]:checked').value);
+      const explanation = document.getElementById("adminExplanation").value;
+      
+      if (!question || options.some(opt => !opt)) {
+        alert("Please fill all fields!");
+        return;
+      }
+
+      const newQuestion = { topic, q: question, options, correct: correctOption, explanation };
+
+      // Try to save to MongoDB via the backend first
+      let savedToBackend = false;
+      try {
+        const res = await fetch(`${API_URL}/questions`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newQuestion)
+        });
+        savedToBackend = res.ok;
+      } catch (err) {
+        console.warn("Backend unreachable, saving question locally only:", err);
+      }
+
+      if (savedToBackend) {
+        await loadBackendQuestions();
+      } else {
+        // Fall back to localStorage so the question isn't lost
+        const adminQuestions = loadAdminQuestions();
+        if (!adminQuestions[topic]) {
+          adminQuestions[topic] = [];
+        }
+        adminQuestions[topic].push({ q: question, options, correct: correctOption, explanation });
+        localStorage.setItem("adminQuestions", JSON.stringify(adminQuestions));
+      }
+      
+      // Reset form and update UI
+      document.getElementById("questionForm").reset();
+      toggleQuestionForm();
+      loadQuestionsList();
+      renderTopicSelection();
+      
+      alert(savedToBackend ? "Question added and saved to the database!" : "Question added locally (backend unreachable — start the server to persist it to MongoDB).");
+    }
+
+    function loadQuestionsList() {
+      const adminQuestions = loadAdminQuestions();
+      const questionsList = document.getElementById("questionsList");
+      let html = '<h5>Existing Questions</h5>';
+      
+      Object.keys(adminQuestions).forEach(topic => {
+        html += `<h6 class="mt-3">${topicData[topic]?.name || topic}</h6>`;
+        adminQuestions[topic].forEach((question, index) => {
+          html += `
+            <div class="question-item">
+              <strong>Q: ${question.q}</strong>
+              <div class="mt-2">
+                ${question.options.map((opt, i) => `
+                  <span class="badge ${i === question.correct ? 'bg-success' : 'bg-secondary'} me-1">
+                    ${String.fromCharCode(65 + i)}. ${opt}
+                  </span>
+                `).join('')}
+              </div>
+              <button class="btn btn-sm btn-danger mt-2" onclick="deleteQuestion('${topic}', ${index})">
+                <i class="fa-solid fa-trash"></i> Delete
+              </button>
+            </div>
+          `;
+        });
+      });
+      
+      questionsList.innerHTML = html || '<p>No questions added yet.</p>';
+    }
+
+    function deleteQuestion(topic, index) {
+      if (confirm("Are you sure you want to delete this question?")) {
+        const adminQuestions = loadAdminQuestions();
+        if (adminQuestions[topic]) {
+          adminQuestions[topic].splice(index, 1);
+          localStorage.setItem("adminQuestions", JSON.stringify(adminQuestions));
+          loadQuestionsList();
+          renderTopicSelection();
+        }
+      }
+    }
+
+    // Helper functions
+    function getTopicDifficulty(topic) {
+      const difficulties = { 
+        numbers: "Easy", 
+        lcmhcf: "Medium", 
+        algebra: "Medium", 
+        percentage: "Easy", 
+        ratio: "Medium", 
+        timework: "Hard",
+        custom: "Variable"
+      };
+      return difficulties[topic] || "Medium";
+    }
+
+    function getUserScore(topic) {
+      const testResults = JSON.parse(localStorage.getItem("testResults")) || [];
+      const topicResults = testResults.filter(result => result.topic === topic);
+      if (topicResults.length === 0) return 0;
+      
+      const totalScore = topicResults.reduce((sum, result) => sum + result.percentage, 0);
+      return Math.round(totalScore / topicResults.length);
+    }
+
+    // Quiz Functions
+    function startTimer() {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        document.getElementById("timer").textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          submitQuiz();
+        }
+      }, 1000);
+    }
+
+    function displayQuestion() {
+      const quizDiv = document.getElementById("quiz");
+      const question = currentQuestions[currentQuestionIndex];
+      
+      let html = `
+        <div class="question-card">
+          <div class="question-text">${currentQuestionIndex + 1}. ${question.q}</div>
+          <div class="options-container">
+      `;
+      
+      question.options.forEach((option, index) => {
+        const isSelected = userAnswers[currentQuestionIndex] === option;
+        html += `
+          <label class="option-label ${isSelected ? 'selected' : ''}">
+            <input type="radio" name="question${currentQuestionIndex}" value="${option}" 
+                   ${isSelected ? 'checked' : ''} onchange="selectAnswer(${currentQuestionIndex}, '${option}')">
+            ${option}
+          </label>
+        `;
+      });
+      
+      html += `</div></div>`;
+      quizDiv.innerHTML = html;
+      document.getElementById("currentQuestion").textContent = currentQuestionIndex + 1;
+    }
+
+    function selectAnswer(questionIndex, answer) {
+      userAnswers[questionIndex] = answer;
+      const options = document.querySelectorAll('.option-label');
+      options.forEach(option => option.classList.remove('selected'));
+      event.target.closest('.option-label').classList.add('selected');
+    }
+
+    function nextQuestion() {
+      if (currentQuestionIndex < currentQuestions.length - 1) {
+        currentQuestionIndex++;
+        displayQuestion();
+        updateNavButtons();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        displayQuestion();
+        updateNavButtons();
+      }
+    }
+
+    function updateNavButtons() {
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const submitBtn = document.getElementById("submitBtn");
+      
+      prevBtn.disabled = currentQuestionIndex === 0;
+      
+      if (currentQuestionIndex === currentQuestions.length - 1) {
+        nextBtn.style.display = "none";
+        submitBtn.style.display = "block";
+      } else {
+        nextBtn.style.display = "block";
+        submitBtn.style.display = "none";
+      }
+    }
+
+    function submitQuiz() {
+      clearInterval(timerInterval);
+      
+      let score = 0;
+      currentQuestions.forEach((question, index) => {
+        if (userAnswers[index] === question.options[question.correct]) {
+          score++;
+        }
+      });
+      
+      const totalQuestions = currentQuestions.length;
+      const percentage = (score / totalQuestions) * 100;
+      
+      showResults(score, totalQuestions, percentage);
+      saveTestResult(score, totalQuestions, currentTopic);
+      
+      if (score === totalQuestions) {
+        let badges = JSON.parse(localStorage.getItem("badges") || "[]");
+        if (!badges.includes(currentTopic)) {
+          badges.push(currentTopic);
+          localStorage.setItem("badges", JSON.stringify(badges));
+          document.getElementById("badgeEarned").style.display = "inline-flex";
+        }
+      }
+    }
+
+    function showResults(score, total, percentage) {
+      const resultSection = document.getElementById("resultSection");
+      const resultIcon = document.getElementById("resultIcon");
+      const resultTitle = document.getElementById("resultTitle");
+      const resultScore = document.getElementById("resultScore");
+      const resultMessage = document.getElementById("resultMessage");
+      
+      document.getElementById('quizSection').style.display = 'none';
+      resultSection.style.display = 'block';
+      
+      resultScore.textContent = `${score}/${total}`;
+      
+      if (percentage >= 90) {
+        resultIcon.innerHTML = '<i class="fa-solid fa-trophy"></i>';
+        resultTitle.textContent = "Excellent Work!";
+        resultMessage.textContent = "You've demonstrated exceptional understanding of this topic!";
+      } else if (percentage >= 70) {
+        resultIcon.innerHTML = '<i class="fa-solid fa-star"></i>';
+        resultTitle.textContent = "Good Job!";
+        resultMessage.textContent = "You have a solid grasp of the material. Keep practicing to improve further!";
+      } else if (percentage >= 50) {
+        resultIcon.innerHTML = '<i class="fa-solid fa-thumbs-up"></i>';
+        resultTitle.textContent = "Not Bad!";
+        resultMessage.textContent = "You're on the right track. Review the material and try again for a better score!";
+      } else {
+        resultIcon.innerHTML = '<i class="fa-solid fa-book"></i>';
+        resultTitle.textContent = "Keep Learning!";
+        resultMessage.textContent = "Take some time to review the learning materials and try the test again.";
+      }
+      
+      resultSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function saveTestResult(score, total, topic) {
+      const testResults = JSON.parse(localStorage.getItem("testResults") || "[]");
+      testResults.push({
+        topic: topic,
+        score: score,
+        total: total,
+        percentage: (score / total) * 100,
+        date: new Date().toISOString()
+      });
+      localStorage.setItem("testResults", JSON.stringify(testResults));
+    }
+
+    // User Profile Functions
+    function initUserProfile() {
+      const navLinks = document.getElementById("navLinks");
+      const username = localStorage.getItem("username");
+      const email = localStorage.getItem("email");
+
+      const existingUserItems = document.querySelectorAll('.user-profile-item, .user-dropdown, .auth-item, .nav-item:has(.text-danger)');
+      existingUserItems.forEach(item => item.remove());
+
+      if (username) {
+        const userLi = document.createElement("li");
+        userLi.className = "nav-item dropdown user-profile-item";
+        userLi.innerHTML = `
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-user"></i> ${username}
+          </a>
+          <ul class="dropdown-menu user-dropdown">
+            <li><a class="dropdown-item" href="#" onclick="showUserProfile()">
+              <i class="fa-solid fa-user-circle"></i> Profile
+            </a></li>
+            <li><a class="dropdown-item" href="#" onclick="showProgress()">
+              <i class="fa-solid fa-chart-line"></i> My Progress
+            </a></li>
+            <li><a class="dropdown-item" href="#" onclick="showAchievements()">
+              <i class="fa-solid fa-trophy"></i> Achievements
+            </a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="#" onclick="logout()">
+              <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a></li>
+          </ul>
+        `;
+        navLinks.appendChild(userLi);
+      } else {
+        const loginLi = document.createElement("li");
+        loginLi.className = "nav-item auth-item";
+        loginLi.innerHTML = `<a class="nav-link" href="auth.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a>`;
+        navLinks.appendChild(loginLi);
+      }
+    }
+
+    function showUserProfile() {
+      const username = localStorage.getItem("username");
+      const email = localStorage.getItem("email");
+      
+      const profileModal = `
+        <div class="modal fade" id="userProfileModal" tabindex="-1">
+          <div class="modal-dialog">
+            <div class="modal-content" style="background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.08); color: var(--light);">
+              <div class="modal-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                <h5 class="modal-title"><i class="fa-solid fa-user-circle"></i> User Profile</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                <div class="text-center mb-4">
+                  <div class="profile-avatar" style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 2rem; color: white;">
+                    ${username ? username.charAt(0).toUpperCase() : 'U'}
+                  </div>
+                  <h4>${username || 'User'}</h4>
+                  <p class="text-muted">${email || 'No email provided'}</p>
+                </div>
+                
+                <div class="profile-stats">
+                  <div class="row text-center">
+                    <div class="col-4">
+                      <div class="stat-value">${getBadgeCount()}</div>
+                      <div class="stat-label">Badges</div>
+                    </div>
+                    <div class="col-4">
+                      <div class="stat-value">${getTestCount()}</div>
+                      <div class="stat-label">Tests Taken</div>
+                    </div>
+                    <div class="col-4">
+                      <div class="stat-value">${getStudyHours()}</div>
+                      <div class="stat-label">Study Hours</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="editProfile()">Edit Profile</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      if (!document.getElementById('userProfileModal')) {
+        document.body.insertAdjacentHTML('beforeend', profileModal);
+      }
+      
+      const modal = new bootstrap.Modal(document.getElementById('userProfileModal'));
+      modal.show();
+    }
+
+    function getBadgeCount() {
+      const badges = JSON.parse(localStorage.getItem("badges") || "[]");
+      return badges.length;
+    }
+
+    function getTestCount() {
+      const testResults = JSON.parse(localStorage.getItem("testResults") || "[]");
+      return testResults.length;
+    }
+
+    function getStudyHours() {
+      const schedules = JSON.parse(localStorage.getItem("schedules") || "[]");
+      const completedSessions = schedules.filter(s => s.completed);
+      const totalMinutes = completedSessions.reduce((sum, session) => sum + parseInt(session.duration || 0), 0);
+      return Math.round(totalMinutes / 60);
+    }
+
+    function showProgress() {
+      alert('Progress tracking feature coming soon!');
+    }
+
+    function showAchievements() {
+      window.location.href = "achievements.html";
+    }
+
+    function editProfile() {
+      const username = localStorage.getItem("username");
+      const newUsername = prompt("Enter new username:", username);
+      if (newUsername && newUsername.trim() !== '') {
+        localStorage.setItem("username", newUsername.trim());
+        alert('Username updated successfully!');
+        location.reload();
+      }
+    }
+
+    function logout() {
+      if (confirm("Are you sure you want to logout?")) {
+        localStorage.clear();
+        window.location.href = "index.html";
+      }
+    }
+
+    function enableAdminMode() {
+      localStorage.setItem("isAdmin", "true");
+      location.reload();
+    }
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', initPage);
   </script>
 </body>
 </html>
