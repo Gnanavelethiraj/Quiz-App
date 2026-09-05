@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
@@ -11,8 +13,8 @@ const Question = require("./models/Question");
 const Lesson = require("./models/Lesson");
 
 const app = express();
-const PORT = 5000;
-const JWT_SECRET = "supersecretkey";
+const PORT = process.env.PORT || 5000;
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Middleware
 app.use(cors());
@@ -23,7 +25,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // NOTE: standardized to the "daakle" database (server.js previously pointed at
 // "quiz-app" while seedQuestions.js pointed at "daakle" - now consistent).
 mongoose
-  .connect("mongodb://127.0.0.1:27017/daakle")
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.error("❌ MongoDB Error:", err));
 

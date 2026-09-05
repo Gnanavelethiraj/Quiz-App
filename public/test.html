@@ -1017,11 +1017,11 @@
           <div class="quiz-info">
             <div class="info-item">
               <i class="fa-solid fa-clock"></i>
-              <span id="timer">10:00</span>
+              <span id="timer">45:00</span>
             </div>
             <div class="info-item">
               <i class="fa-solid fa-list-ol"></i>
-              <span id="questionCount">5 Questions</span>
+              <span id="questionCount">25 Questions</span>
             </div>
             <div class="info-item">
               <i class="fa-solid fa-star"></i>
@@ -1031,7 +1031,7 @@
         </div>
         
         <div class="question-counter">
-          Question <span id="currentQuestion">1</span> of <span id="totalQuestions">5</span>
+          Question <span id="currentQuestion">1</span> of <span id="totalQuestions">25</span>
         </div>
         
         <div id="quiz">
@@ -1061,7 +1061,7 @@
           <i class="fa-solid fa-trophy"></i>
         </div>
         <h2 class="result-title" id="resultTitle">Congratulations!</h2>
-        <div class="result-score" id="resultScore">8/10</div>
+        <div class="result-score" id="resultScore">20/25</div>
         <p class="result-message" id="resultMessage">You've successfully completed the test with an excellent score!</p>
         
         <div class="badge-earned" id="badgeEarned" style="display: none;">
@@ -1122,7 +1122,7 @@
   <script>
     // Backend API (MongoDB-backed questions). Falls back to the built-in
     // defaultQuestions below if the server is unreachable.
-    const API_URL = "http://localhost:5000/api";
+    const API_URL = "/api";
     let backendQuestions = {}; // populated from MongoDB via /api/questions
 
     // Fetch every topic's questions from the backend in one call and
@@ -1146,66 +1146,375 @@
     let currentQuestionIndex = 0;
     let userAnswers = [];
     let timerInterval;
-    let timeLeft = 600; // 10 minutes in seconds
+    let timeLeft = 2700; // 45 minutes in seconds
     let currentQuestions = [];
 
-    // Default questions (fallback if backend and admin questions are unavailable)
+    // 50 topic-specific questions per topic (keeping the same 50 questions from before)
     const defaultQuestions = {
       numbers: [
-        {
-          q: "What is the sum of the first 10 prime numbers?",
-          options: ["101", "129", "139", "149"],
-          correct: 1,
-          explanation: "The first 10 prime numbers are: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29. Their sum is 129."
-        }
+        { q: "What is the sum of the first 10 prime numbers?", options: ["101", "129", "139", "149"], correct: 1, explanation: "The first 10 prime numbers are: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29. Their sum is 129." },
+        { q: "What is 7 × 8 × 9?", options: ["504", "512", "486", "432"], correct: 0, explanation: "7 × 8 = 56, 56 × 9 = 504." },
+        { q: "What is the cube root of 729?", options: ["7", "8", "9", "10"], correct: 2, explanation: "9³ = 9 × 9 × 9 = 729." },
+        { q: "What is 15²?", options: ["215", "225", "235", "245"], correct: 1, explanation: "15² = 15 × 15 = 225." },
+        { q: "What is the smallest prime number greater than 50?", options: ["51", "53", "57", "59"], correct: 1, explanation: "53 is the smallest prime number greater than 50." },
+        { q: "What is 12 × 15?", options: ["160", "170", "180", "190"], correct: 2, explanation: "12 × 15 = 180." },
+        { q: "What is the square root of 144?", options: ["10", "11", "12", "13"], correct: 2, explanation: "12² = 144, so √144 = 12." },
+        { q: "What is 2⁸?", options: ["128", "256", "512", "1024"], correct: 1, explanation: "2⁸ = 2 × 2 × 2 × 2 × 2 × 2 × 2 × 2 = 256." },
+        { q: "What is the sum of all even numbers from 1 to 20?", options: ["90", "100", "110", "120"], correct: 2, explanation: "Even numbers: 2+4+6+8+10+12+14+16+18+20 = 110." },
+        { q: "What is 99 + 98 + 97?", options: ["294", "295", "296", "297"], correct: 0, explanation: "99 + 98 + 97 = 294." },
+        { q: "What is the HCF of 24 and 36?", options: ["6", "8", "12", "18"], correct: 2, explanation: "Factors of 24: 1,2,3,4,6,8,12,24. Factors of 36: 1,2,3,4,6,9,12,18,36. HCF = 12." },
+        { q: "What is 5! (5 factorial)?", options: ["60", "100", "120", "150"], correct: 2, explanation: "5! = 5 × 4 × 3 × 2 × 1 = 120." },
+        { q: "What is the smallest composite number?", options: ["1", "2", "3", "4"], correct: 3, explanation: "4 is the smallest composite number (it has factors other than 1 and itself)." },
+        { q: "What is 11 × 11?", options: ["111", "121", "131", "141"], correct: 1, explanation: "11 × 11 = 121." },
+        { q: "What is the LCM of 6 and 8?", options: ["12", "18", "24", "30"], correct: 2, explanation: "Multiples of 6: 6,12,18,24. Multiples of 8: 8,16,24,32. LCM = 24." },
+        { q: "What is 0! (0 factorial)?", options: ["0", "1", "2", "3"], correct: 1, explanation: "By definition, 0! = 1." },
+        { q: "What is the sum of the first 5 prime numbers?", options: ["18", "28", "38", "48"], correct: 1, explanation: "First 5 primes: 2+3+5+7+11 = 28." },
+        { q: "What is 25 × 25?", options: ["525", "575", "625", "675"], correct: 2, explanation: "25 × 25 = 625." },
+        { q: "What is 3⁵?", options: ["213", "223", "233", "243"], correct: 3, explanation: "3⁵ = 3 × 3 × 3 × 3 × 3 = 243." },
+        { q: "What is the smallest odd number?", options: ["0", "1", "2", "3"], correct: 1, explanation: "1 is the smallest positive odd number." },
+        { q: "What is 144 ÷ 12?", options: ["10", "11", "12", "13"], correct: 2, explanation: "144 ÷ 12 = 12." },
+        { q: "What is the prime factorization of 84?", options: ["2² × 3 × 7", "2 × 3² × 7", "2 × 3 × 7²", "2² × 3² × 7"], correct: 0, explanation: "84 = 2² × 3 × 7." },
+        { q: "What is 9 × 12?", options: ["98", "108", "118", "128"], correct: 1, explanation: "9 × 12 = 108." },
+        { q: "What is 7² + 3²?", options: ["48", "58", "68", "78"], correct: 1, explanation: "7² + 3² = 49 + 9 = 58." },
+        { q: "What is the sum of numbers from 1 to 10?", options: ["45", "50", "55", "60"], correct: 2, explanation: "Sum = 1+2+3+4+5+6+7+8+9+10 = 55." },
+        { q: "What is 2⁶?", options: ["32", "48", "64", "80"], correct: 2, explanation: "2⁶ = 64." },
+        { q: "What is the HCF of 18 and 24?", options: ["3", "4", "5", "6"], correct: 3, explanation: "18 factors: 1,2,3,6,9,18. 24 factors: 1,2,3,4,6,8,12,24. HCF = 6." },
+        { q: "What is 13 × 13?", options: ["149", "159", "169", "179"], correct: 2, explanation: "13² = 169." },
+        { q: "What is 4! (4 factorial)?", options: ["12", "20", "24", "30"], correct: 2, explanation: "4! = 4 × 3 × 2 × 1 = 24." },
+        { q: "What is the LCM of 9 and 12?", options: ["18", "24", "36", "48"], correct: 2, explanation: "9: 9,18,27,36. 12: 12,24,36,48. LCM = 36." },
+        { q: "What is √196?", options: ["12", "13", "14", "15"], correct: 2, explanation: "14² = 196, so √196 = 14." },
+        { q: "What is 1 + 2 + 3 + ... + 20?", options: ["190", "200", "210", "220"], correct: 2, explanation: "Sum = n(n+1)/2 = 20×21/2 = 210." },
+        { q: "What is the smallest 3-digit prime number?", options: ["101", "103", "107", "109"], correct: 0, explanation: "101 is the smallest 3-digit prime number." },
+        { q: "What is 25% of 200?", options: ["25", "50", "75", "100"], correct: 1, explanation: "25% = 0.25, 0.25 × 200 = 50." },
+        { q: "What is 6⁰?", options: ["0", "1", "6", "36"], correct: 1, explanation: "Any number to the power 0 is 1." },
+        { q: "What is 17 × 17?", options: ["269", "279", "289", "299"], correct: 2, explanation: "17² = 289." },
+        { q: "What is the cube root of 64?", options: ["2", "3", "4", "5"], correct: 2, explanation: "4³ = 64, so ∛64 = 4." },
+        { q: "What is 75 + 68?", options: ["133", "143", "153", "163"], correct: 1, explanation: "75 + 68 = 143." },
+        { q: "What is the sum of the first 6 prime numbers?", options: ["39", "41", "43", "45"], correct: 1, explanation: "First 6 primes: 2+3+5+7+11+13 = 41." },
+        { q: "What is 8 × 8?", options: ["54", "58", "62", "64"], correct: 3, explanation: "8² = 64." },
+        { q: "What is the HCF of 15 and 25?", options: ["3", "4", "5", "6"], correct: 2, explanation: "15 factors: 1,3,5,15. 25 factors: 1,5,25. HCF = 5." },
+        { q: "What is 10² + 5²?", options: ["100", "115", "125", "135"], correct: 2, explanation: "100 + 25 = 125." },
+        { q: "What is 2 × 3 × 5 × 7?", options: ["180", "200", "210", "220"], correct: 2, explanation: "2 × 3 = 6, × 5 = 30, × 7 = 210." },
+        { q: "What is 14²?", options: ["176", "186", "196", "206"], correct: 2, explanation: "14² = 196." },
+        { q: "What is the LCM of 4, 6, and 8?", options: ["12", "18", "24", "30"], correct: 2, explanation: "4:4,8,12,16,20,24. 6:6,12,18,24. 8:8,16,24,32. LCM = 24." },
+        { q: "What is 123 + 456?", options: ["569", "579", "589", "599"], correct: 1, explanation: "123 + 456 = 579." },
+        { q: "What is 3 × 3 × 3 × 3?", options: ["61", "71", "81", "91"], correct: 2, explanation: "3⁴ = 81." },
+        { q: "What is the smallest even number greater than 10?", options: ["10", "11", "12", "13"], correct: 2, explanation: "12 is the smallest even number greater than 10." },
+        { q: "What is 1000 - 467?", options: ["523", "533", "543", "553"], correct: 1, explanation: "1000 - 467 = 533." },
+        { q: "What is 5² + 12²?", options: ["139", "149", "159", "169"], correct: 3, explanation: "25 + 144 = 169." }
       ],
       lcmhcf: [
-        {
-          q: "What is the LCM of 12 and 18?",
-          options: ["24", "36", "48", "72"],
-          correct: 1,
-          explanation: "Prime factors: 12 = 2²×3, 18 = 2×3². LCM = 2²×3² = 4×9 = 36."
-        }
+        { q: "What is the LCM of 12 and 18?", options: ["24", "36", "48", "72"], correct: 1, explanation: "Prime factors: 12 = 2²×3, 18 = 2×3². LCM = 2²×3² = 4×9 = 36." },
+        { q: "What is the HCF of 24 and 36?", options: ["6", "8", "12", "18"], correct: 2, explanation: "24 factors: 1,2,3,4,6,8,12,24. 36 factors: 1,2,3,4,6,9,12,18,36. HCF = 12." },
+        { q: "What is the LCM of 6 and 8?", options: ["12", "18", "24", "30"], correct: 2, explanation: "Multiples of 6: 6,12,18,24. Multiples of 8: 8,16,24. LCM = 24." },
+        { q: "What is the HCF of 18 and 24?", options: ["3", "4", "5", "6"], correct: 3, explanation: "18: 1,2,3,6,9,18. 24: 1,2,3,4,6,8,12,24. HCF = 6." },
+        { q: "What is the LCM of 9 and 12?", options: ["18", "24", "36", "48"], correct: 2, explanation: "9: 9,18,27,36. 12: 12,24,36. LCM = 36." },
+        { q: "What is the HCF of 15 and 25?", options: ["3", "4", "5", "6"], correct: 2, explanation: "15: 1,3,5,15. 25: 1,5,25. HCF = 5." },
+        { q: "What is the LCM of 4, 6, and 8?", options: ["12", "18", "24", "30"], correct: 2, explanation: "4:4,8,12,16,20,24. 6:6,12,18,24. 8:8,16,24. LCM = 24." },
+        { q: "What is the HCF of 32 and 48?", options: ["8", "12", "16", "24"], correct: 2, explanation: "32: 1,2,4,8,16,32. 48: 1,2,3,4,6,8,12,16,24,48. HCF = 16." },
+        { q: "What is the LCM of 3, 5, and 7?", options: ["60", "70", "80", "105"], correct: 3, explanation: "3×5×7 = 105 (all are coprime)." },
+        { q: "What is the HCF of 27 and 45?", options: ["3", "6", "9", "12"], correct: 2, explanation: "27: 1,3,9,27. 45: 1,3,5,9,15,45. HCF = 9." },
+        { q: "What is the LCM of 10 and 15?", options: ["20", "25", "30", "35"], correct: 2, explanation: "10: 10,20,30. 15: 15,30. LCM = 30." },
+        { q: "What is the HCF of 42 and 56?", options: ["7", "10", "14", "21"], correct: 2, explanation: "42: 1,2,3,6,7,14,21,42. 56: 1,2,4,7,8,14,28,56. HCF = 14." },
+        { q: "What is the LCM of 7 and 11?", options: ["55", "66", "77", "88"], correct: 2, explanation: "7×11 = 77." },
+        { q: "What is the HCF of 8, 12, and 16?", options: ["2", "3", "4", "6"], correct: 2, explanation: "8: 1,2,4,8. 12:1,2,3,4,6,12. 16:1,2,4,8,16. HCF = 4." },
+        { q: "What is the LCM of 2, 3, and 4?", options: ["6", "8", "10", "12"], correct: 3, explanation: "2:2,4,6,8,10,12. 3:3,6,9,12. 4:4,8,12. LCM = 12." },
+        { q: "What is the HCF of 40 and 60?", options: ["10", "15", "20", "30"], correct: 2, explanation: "40: 1,2,4,5,8,10,20,40. 60: 1,2,3,4,5,6,10,12,15,20,30,60. HCF = 20." },
+        { q: "What is the LCM of 8 and 12?", options: ["16", "20", "24", "28"], correct: 2, explanation: "8: 8,16,24. 12: 12,24. LCM = 24." },
+        { q: "What is the HCF of 25 and 35?", options: ["3", "4", "5", "6"], correct: 2, explanation: "25: 1,5,25. 35:1,5,7,35. HCF = 5." },
+        { q: "What is the LCM of 11 and 13?", options: ["121", "143", "165", "187"], correct: 1, explanation: "11×13 = 143." },
+        { q: "What is the HCF of 16, 24, and 32?", options: ["4", "6", "8", "12"], correct: 2, explanation: "16:1,2,4,8,16. 24:1,2,3,4,6,8,12,24. 32:1,2,4,8,16,32. HCF = 8." },
+        { q: "What is the LCM of 14 and 21?", options: ["28", "36", "42", "48"], correct: 2, explanation: "14: 14,28,42. 21: 21,42. LCM = 42." },
+        { q: "What is the HCF of 36 and 48?", options: ["6", "8", "10", "12"], correct: 3, explanation: "36:1,2,3,4,6,9,12,18,36. 48:1,2,3,4,6,8,12,16,24,48. HCF = 12." },
+        { q: "What is the LCM of 5 and 13?", options: ["55", "65", "75", "85"], correct: 1, explanation: "5×13 = 65." },
+        { q: "What is the HCF of 22 and 33?", options: ["3", "5", "7", "11"], correct: 3, explanation: "22:1,2,11,22. 33:1,3,11,33. HCF = 11." },
+        { q: "What is the LCM of 9 and 15?", options: ["30", "35", "40", "45"], correct: 3, explanation: "9:9,18,27,36,45. 15:15,30,45. LCM = 45." },
+        { q: "What is the HCF of 50 and 75?", options: ["15", "20", "25", "30"], correct: 2, explanation: "50:1,2,5,10,25,50. 75:1,3,5,15,25,75. HCF = 25." },
+        { q: "What is the LCM of 6 and 20?", options: ["40", "50", "60", "70"], correct: 2, explanation: "6:6,12,18,24,30,36,42,48,54,60. 20:20,40,60. LCM = 60." },
+        { q: "What is the HCF of 28 and 42?", options: ["7", "12", "14", "21"], correct: 2, explanation: "28:1,2,4,7,14,28. 42:1,2,3,6,7,14,21,42. HCF = 14." },
+        { q: "What is the LCM of 8, 9, and 10?", options: ["180", "240", "280", "360"], correct: 3, explanation: "8: 8,16,24,32,40,48,56,64,72,80,88,96,104,112,120,128,136,144,152,160,168,176,184,192,200,208,216,224,232,240,248,256,264,272,280,288,296,304,312,320,328,336,344,352,360. 9: 9,18,27,36,45,54,63,72,81,90,99,108,117,126,135,144,153,162,171,180,189,198,207,216,225,234,243,252,261,270,279,288,297,306,315,324,333,342,351,360. 10: 10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,310,320,330,340,350,360. LCM = 360." },
+        { q: "What is the HCF of 30 and 45?", options: ["10", "15", "20", "25"], correct: 1, explanation: "30:1,2,3,5,6,10,15,30. 45:1,3,5,9,15,45. HCF = 15." },
+        { q: "What is the LCM of 12, 18, and 24?", options: ["48", "56", "64", "72"], correct: 3, explanation: "12: 12,24,36,48,60,72. 18:18,36,54,72. 24:24,48,72. LCM = 72." },
+        { q: "What is the HCF of 56 and 84?", options: ["14", "18", "22", "28"], correct: 3, explanation: "56:1,2,4,7,8,14,28,56. 84:1,2,3,4,6,7,12,14,21,28,42,84. HCF = 28." },
+        { q: "What is the LCM of 3 and 11?", options: ["22", "27", "33", "44"], correct: 2, explanation: "3×11 = 33." },
+        { q: "What is the HCF of 64 and 96?", options: ["16", "24", "32", "48"], correct: 2, explanation: "64:1,2,4,8,16,32,64. 96:1,2,3,4,6,8,12,16,24,32,48,96. HCF = 32." },
+        { q: "What is the LCM of 15 and 20?", options: ["40", "50", "60", "80"], correct: 2, explanation: "15:15,30,45,60. 20:20,40,60. LCM = 60." },
+        { q: "What is the HCF of 9, 27, and 81?", options: ["3", "6", "9", "12"], correct: 2, explanation: "9:1,3,9. 27:1,3,9,27. 81:1,3,9,27,81. HCF = 9." },
+        { q: "What is the LCM of 5, 8, and 10?", options: ["30", "35", "40", "45"], correct: 2, explanation: "5:5,10,15,20,25,30,35,40. 8:8,16,24,32,40. 10:10,20,30,40. LCM = 40." },
+        { q: "What is the HCF of 18, 36, and 54?", options: ["6", "9", "12", "18"], correct: 3, explanation: "18:1,2,3,6,9,18. 36:1,2,3,4,6,9,12,18,36. 54:1,2,3,6,9,18,27,54. HCF = 18." },
+        { q: "What is the LCM of 16 and 24?", options: ["32", "40", "48", "56"], correct: 2, explanation: "16:16,32,48. 24:24,48. LCM = 48." },
+        { q: "What is the HCF of 35 and 49?", options: ["5", "7", "11", "13"], correct: 1, explanation: "35:1,5,7,35. 49:1,7,49. HCF = 7." },
+        { q: "What is the LCM of 13 and 17?", options: ["181", "191", "201", "221"], correct: 3, explanation: "13×17 = 221." },
+        { q: "What is the HCF of 20, 30, and 40?", options: ["5", "8", "10", "15"], correct: 2, explanation: "20:1,2,4,5,10,20. 30:1,2,3,5,6,10,15,30. 40:1,2,4,5,8,10,20,40. HCF = 10." },
+        { q: "What is the LCM of 7, 14, and 21?", options: ["21", "28", "36", "42"], correct: 3, explanation: "7:7,14,21,28,35,42. 14:14,28,42. 21:21,42. LCM = 42." },
+        { q: "What is the HCF of 33 and 55?", options: ["3", "5", "7", "11"], correct: 3, explanation: "33:1,3,11,33. 55:1,5,11,55. HCF = 11." },
+        { q: "What is the LCM of 10, 25, and 50?", options: ["40", "45", "50", "55"], correct: 2, explanation: "10:10,20,30,40,50. 25:25,50. 50:50. LCM = 50." },
+        { q: "What is the HCF of 48 and 72?", options: ["12", "18", "24", "30"], correct: 2, explanation: "48:1,2,3,4,6,8,12,16,24,48. 72:1,2,3,4,6,8,9,12,18,24,36,72. HCF = 24." },
+        { q: "What is the LCM of 4, 9, and 12?", options: ["24", "28", "32", "36"], correct: 3, explanation: "4:4,8,12,16,20,24,28,32,36. 9:9,18,27,36. 12:12,24,36. LCM = 36." },
+        { q: "What is the HCF of 100 and 125?", options: ["15", "20", "25", "30"], correct: 2, explanation: "100:1,2,4,5,10,20,25,50,100. 125:1,5,25,125. HCF = 25." },
+        { q: "What is the LCM of 11, 22, and 33?", options: ["44", "55", "66", "77"], correct: 2, explanation: "11:11,22,33,44,55,66. 22:22,44,66. 33:33,66. LCM = 66." },
+        { q: "What is the HCF of 27, 81, and 243?", options: ["9", "15", "21", "27"], correct: 3, explanation: "27:1,3,9,27. 81:1,3,9,27,81. 243:1,3,9,27,81,243. HCF = 27." }
       ],
       algebra: [
-        {
-          q: "If 2x + 5 = 15, what is the value of x?",
-          options: ["3", "5", "7", "10"],
-          correct: 1,
-          explanation: "2x + 5 = 15 → 2x = 10 → x = 5."
-        }
+        { q: "If 2x + 5 = 15, what is the value of x?", options: ["3", "5", "7", "10"], correct: 1, explanation: "2x + 5 = 15 → 2x = 10 → x = 5." },
+        { q: "Solve: 3x - 7 = 14", options: ["5", "6", "7", "8"], correct: 2, explanation: "3x - 7 = 14 → 3x = 21 → x = 7." },
+        { q: "What is the value of x in 4x + 8 = 32?", options: ["4", "5", "6", "7"], correct: 2, explanation: "4x + 8 = 32 → 4x = 24 → x = 6." },
+        { q: "Solve: 2(x + 3) = 18", options: ["4", "5", "6", "7"], correct: 2, explanation: "2(x + 3) = 18 → x + 3 = 9 → x = 6." },
+        { q: "What is x if 3x - 12 = 0?", options: ["2", "3", "4", "5"], correct: 2, explanation: "3x - 12 = 0 → 3x = 12 → x = 4." },
+        { q: "Solve: 5x + 10 = 45", options: ["5", "6", "7", "8"], correct: 2, explanation: "5x + 10 = 45 → 5x = 35 → x = 7." },
+        { q: "If 2x = 18, what is x?", options: ["6", "8", "9", "10"], correct: 2, explanation: "2x = 18 → x = 9." },
+        { q: "Solve: x/2 + 3 = 8", options: ["8", "9", "10", "11"], correct: 2, explanation: "x/2 + 3 = 8 → x/2 = 5 → x = 10." },
+        { q: "What is the value of x in 3x + 2 = 5x - 4?", options: ["1", "2", "3", "4"], correct: 2, explanation: "3x + 2 = 5x - 4 → 2 + 4 = 5x - 3x → 6 = 2x → x = 3." },
+        { q: "Solve: 2x - 5 = 3x + 1", options: ["-6", "-5", "-4", "-3"], correct: 0, explanation: "2x - 5 = 3x + 1 → -5 - 1 = 3x - 2x → -6 = x." },
+        { q: "What is x if 4(x - 2) = 16?", options: ["4", "5", "6", "7"], correct: 2, explanation: "4(x - 2) = 16 → x - 2 = 4 → x = 6." },
+        { q: "Solve: 3(2x + 1) = 15", options: ["1", "2", "3", "4"], correct: 1, explanation: "3(2x + 1) = 15 → 2x + 1 = 5 → 2x = 4 → x = 2." },
+        { q: "If x + y = 10 and x - y = 4, what is x?", options: ["5", "6", "7", "8"], correct: 2, explanation: "Adding the equations: 2x = 14 → x = 7." },
+        { q: "Solve: 2x + 3y = 12, x = 3. What is y?", options: ["1", "2", "3", "4"], correct: 1, explanation: "2(3) + 3y = 12 → 6 + 3y = 12 → 3y = 6 → y = 2." },
+        { q: "What is x if 5x - 8 = 2x + 10?", options: ["4", "5", "6", "7"], correct: 2, explanation: "5x - 8 = 2x + 10 → 5x - 2x = 10 + 8 → 3x = 18 → x = 6." },
+        { q: "Solve: x/3 - 2 = 4", options: ["12", "15", "18", "21"], correct: 2, explanation: "x/3 - 2 = 4 → x/3 = 6 → x = 18." },
+        { q: "If 2x + 3 = 7, what is 4x + 6?", options: ["10", "12", "14", "16"], correct: 2, explanation: "2x + 3 = 7 → 2x = 4 → x = 2. 4x + 6 = 4(2) + 6 = 8 + 6 = 14." },
+        { q: "Solve: 7x = 49", options: ["5", "6", "7", "8"], correct: 2, explanation: "7x = 49 → x = 7." },
+        { q: "What is x if 3x + 2 = 2x + 5?", options: ["1", "2", "3", "4"], correct: 2, explanation: "3x + 2 = 2x + 5 → 3x - 2x = 5 - 2 → x = 3." },
+        { q: "Solve: 4(x + 1) = 2(x + 5)", options: ["1", "2", "3", "4"], correct: 2, explanation: "4x + 4 = 2x + 10 → 4x - 2x = 10 - 4 → 2x = 6 → x = 3." },
+        { q: "If 2x - 1 = 5x - 10, what is x?", options: ["1", "2", "3", "4"], correct: 2, explanation: "2x - 1 = 5x - 10 → -1 + 10 = 5x - 2x → 9 = 3x → x = 3." },
+        { q: "Solve: x/4 = 3", options: ["8", "10", "12", "14"], correct: 2, explanation: "x/4 = 3 → x = 12." },
+        { q: "What is y in 3y + 2 = 5y - 6?", options: ["2", "3", "4", "5"], correct: 2, explanation: "3y + 2 = 5y - 6 → 2 + 6 = 5y - 3y → 8 = 2y → y = 4." },
+        { q: "Solve: 2(x - 3) = x + 4", options: ["8", "9", "10", "11"], correct: 2, explanation: "2x - 6 = x + 4 → 2x - x = 4 + 6 → x = 10." },
+        { q: "If 5x + 3 = 28, what is x?", options: ["3", "4", "5", "6"], correct: 2, explanation: "5x + 3 = 28 → 5x = 25 → x = 5." },
+        { q: "Solve: 3x - 6 = 9", options: ["3", "4", "5", "6"], correct: 2, explanation: "3x - 6 = 9 → 3x = 15 → x = 5." },
+        { q: "What is x if 2x + x = 15?", options: ["3", "4", "5", "6"], correct: 2, explanation: "2x + x = 15 → 3x = 15 → x = 5." },
+        { q: "Solve: 4x - 5 = 3x + 7", options: ["8", "10", "12", "14"], correct: 2, explanation: "4x - 5 = 3x + 7 → 4x - 3x = 7 + 5 → x = 12." },
+        { q: "If x + 5 = 12, what is 2x + 10?", options: ["20", "22", "24", "26"], correct: 2, explanation: "x + 5 = 12 → x = 7. 2x + 10 = 2(7) + 10 = 14 + 10 = 24." },
+        { q: "Solve: 6x - 18 = 0", options: ["1", "2", "3", "4"], correct: 2, explanation: "6x - 18 = 0 → 6x = 18 → x = 3." },
+        { q: "What is x in 2x + 3 = 4x - 1?", options: ["1", "2", "3", "4"], correct: 1, explanation: "2x + 3 = 4x - 1 → 3 + 1 = 4x - 2x → 4 = 2x → x = 2." },
+        { q: "Solve: 3(x + 2) = 2(x + 3)", options: ["0", "1", "2", "3"], correct: 0, explanation: "3x + 6 = 2x + 6 → 3x - 2x = 6 - 6 → x = 0." },
+        { q: "If 3x + 2 = 11, what is x?", options: ["1", "2", "3", "4"], correct: 2, explanation: "3x + 2 = 11 → 3x = 9 → x = 3." },
+        { q: "Solve: 4x + 6 = 2x + 14", options: ["2", "3", "4", "5"], correct: 2, explanation: "4x + 6 = 2x + 14 → 4x - 2x = 14 - 6 → 2x = 8 → x = 4." },
+        { q: "What is y in 5y - 3 = 2y + 9?", options: ["2", "3", "4", "5"], correct: 2, explanation: "5y - 3 = 2y + 9 → 5y - 2y = 9 + 3 → 3y = 12 → y = 4." },
+        { q: "Solve: 2x + 7 = 3x - 3", options: ["8", "9", "10", "11"], correct: 2, explanation: "2x + 7 = 3x - 3 → 7 + 3 = 3x - 2x → x = 10." },
+        { q: "If x = 4, what is 3x + 2?", options: ["12", "13", "14", "15"], correct: 2, explanation: "3(4) + 2 = 12 + 2 = 14." },
+        { q: "Solve: 5x + 2 = 3x + 8", options: ["1", "2", "3", "4"], correct: 2, explanation: "5x + 2 = 3x + 8 → 5x - 3x = 8 - 2 → 2x = 6 → x = 3." },
+        { q: "What is x if 4x - 8 = 2x + 6?", options: ["5", "6", "7", "8"], correct: 2, explanation: "4x - 8 = 2x + 6 → 4x - 2x = 6 + 8 → 2x = 14 → x = 7." },
+        { q: "Solve: 3(2x - 1) = 9", options: ["1", "2", "3", "4"], correct: 1, explanation: "3(2x - 1) = 9 → 2x - 1 = 3 → 2x = 4 → x = 2." },
+        { q: "If 2x + 3 = 5x - 6, what is x?", options: ["1", "2", "3", "4"], correct: 2, explanation: "2x + 3 = 5x - 6 → 3 + 6 = 5x - 2x → 9 = 3x → x = 3." },
+        { q: "Solve: 7x - 4 = 3x + 12", options: ["2", "3", "4", "5"], correct: 2, explanation: "7x - 4 = 3x + 12 → 7x - 3x = 12 + 4 → 4x = 16 → x = 4." },
+        { q: "What is y in 2y + 5 = y + 8?", options: ["1", "2", "3", "4"], correct: 2, explanation: "2y + 5 = y + 8 → 2y - y = 8 - 5 → y = 3." },
+        { q: "Solve: 3x - 5 = 2x + 3", options: ["6", "7", "8", "9"], correct: 2, explanation: "3x - 5 = 2x + 3 → 3x - 2x = 3 + 5 → x = 8." },
+        { q: "If x + 3 = 2x - 1, what is x?", options: ["2", "3", "4", "5"], correct: 2, explanation: "x + 3 = 2x - 1 → 3 + 1 = 2x - x → x = 4." },
+        { q: "Solve: 4(2x - 3) = 20", options: ["2", "3", "4", "5"], correct: 2, explanation: "4(2x - 3) = 20 → 2x - 3 = 5 → 2x = 8 → x = 4." },
+        { q: "What is x in 5x + 7 = 3x + 17?", options: ["3", "4", "5", "6"], correct: 2, explanation: "5x + 7 = 3x + 17 → 5x - 3x = 17 - 7 → 2x = 10 → x = 5." },
+        { q: "Solve: 6x - 12 = 18", options: ["3", "4", "5", "6"], correct: 2, explanation: "6x - 12 = 18 → 6x = 30 → x = 5." },
+        { q: "If 3x + 4 = 2x + 11, what is x?", options: ["5", "6", "7", "8"], correct: 2, explanation: "3x + 4 = 2x + 11 → 3x - 2x = 11 - 4 → x = 7." },
+        { q: "Solve: 2(x + 4) = 3(x - 2)", options: ["10", "11", "12", "13"], correct: 2, explanation: "2x + 8 = 3x - 6 → 8 + 6 = 3x - 2x → x = 14." },
+        { q: "What is y in 4y - 6 = 2y + 8?", options: ["5", "6", "7", "8"], correct: 2, explanation: "4y - 6 = 2y + 8 → 4y - 2y = 8 + 6 → 2y = 14 → y = 7." }
       ],
       percentage: [
-        {
-          q: "What is 25% of 200?",
-          options: ["25", "50", "75", "100"],
-          correct: 1,
-          explanation: "25% of 200 = (25/100) × 200 = 0.25 × 200 = 50."
-        }
+        { q: "What is 25% of 200?", options: ["25", "50", "75", "100"], correct: 1, explanation: "25% = 0.25, 0.25 × 200 = 50." },
+        { q: "What is 10% of 150?", options: ["10", "15", "20", "25"], correct: 1, explanation: "10% = 0.10, 0.10 × 150 = 15." },
+        { q: "What is 50% of 80?", options: ["30", "40", "50", "60"], correct: 1, explanation: "50% = 0.50, 0.50 × 80 = 40." },
+        { q: "What is 75% of 60?", options: ["35", "40", "45", "50"], correct: 2, explanation: "75% = 0.75, 0.75 × 60 = 45." },
+        { q: "What is 20% of 90?", options: ["15", "16", "17", "18"], correct: 3, explanation: "20% = 0.20, 0.20 × 90 = 18." },
+        { q: "What percent of 50 is 10?", options: ["15%", "20%", "25%", "30%"], correct: 1, explanation: "10/50 × 100 = 20%." },
+        { q: "What percent of 80 is 20?", options: ["20%", "25%", "30%", "35%"], correct: 1, explanation: "20/80 × 100 = 25%." },
+        { q: "What is 40% of 250?", options: ["80", "90", "100", "110"], correct: 2, explanation: "40% = 0.40, 0.40 × 250 = 100." },
+        { q: "What is 15% of 300?", options: ["35", "40", "45", "50"], correct: 2, explanation: "15% = 0.15, 0.15 × 300 = 45." },
+        { q: "What percent of 120 is 30?", options: ["20%", "25%", "30%", "35%"], correct: 1, explanation: "30/120 × 100 = 25%." },
+        { q: "What is 30% of 200?", options: ["50", "60", "70", "80"], correct: 1, explanation: "30% = 0.30, 0.30 × 200 = 60." },
+        { q: "What percent of 60 is 45?", options: ["65%", "70%", "75%", "80%"], correct: 2, explanation: "45/60 × 100 = 75%." },
+        { q: "What is 80% of 50?", options: ["30", "35", "40", "45"], correct: 2, explanation: "80% = 0.80, 0.80 × 50 = 40." },
+        { q: "What percent of 200 is 50?", options: ["20%", "25%", "30%", "35%"], correct: 1, explanation: "50/200 × 100 = 25%." },
+        { q: "What is 45% of 80?", options: ["32", "34", "36", "38"], correct: 2, explanation: "45% = 0.45, 0.45 × 80 = 36." },
+        { q: "What percent of 150 is 30?", options: ["15%", "20%", "25%", "30%"], correct: 1, explanation: "30/150 × 100 = 20%." },
+        { q: "What is 12% of 250?", options: ["20", "25", "30", "35"], correct: 2, explanation: "12% = 0.12, 0.12 × 250 = 30." },
+        { q: "What percent of 90 is 27?", options: ["25%", "30%", "35%", "40%"], correct: 1, explanation: "27/90 × 100 = 30%." },
+        { q: "What is 60% of 120?", options: ["62", "64", "70", "72"], correct: 3, explanation: "60% = 0.60, 0.60 × 120 = 72." },
+        { q: "What percent of 80 is 32?", options: ["35%", "38%", "40%", "42%"], correct: 2, explanation: "32/80 × 100 = 40%." },
+        { q: "What is 35% of 200?", options: ["60", "65", "70", "75"], correct: 2, explanation: "35% = 0.35, 0.35 × 200 = 70." },
+        { q: "What percent of 100 is 75?", options: ["65%", "70%", "75%", "80%"], correct: 2, explanation: "75/100 × 100 = 75%." },
+        { q: "What is 18% of 150?", options: ["25", "27", "30", "32"], correct: 1, explanation: "18% = 0.18, 0.18 × 150 = 27." },
+        { q: "What percent of 40 is 10?", options: ["20%", "25%", "30%", "35%"], correct: 1, explanation: "10/40 × 100 = 25%." },
+        { q: "What is 55% of 60?", options: ["30", "31", "32", "33"], correct: 3, explanation: "55% = 0.55, 0.55 × 60 = 33." },
+        { q: "What percent of 70 is 28?", options: ["35%", "38%", "40%", "42%"], correct: 2, explanation: "28/70 × 100 = 40%." },
+        { q: "What is 65% of 40?", options: ["24", "25", "26", "27"], correct: 2, explanation: "65% = 0.65, 0.65 × 40 = 26." },
+        { q: "What percent of 120 is 48?", options: ["35%", "38%", "40%", "42%"], correct: 2, explanation: "48/120 × 100 = 40%." },
+        { q: "What is 85% of 60?", options: ["48", "49", "50", "51"], correct: 3, explanation: "85% = 0.85, 0.85 × 60 = 51." },
+        { q: "What percent of 50 is 35?", options: ["60%", "65%", "70%", "75%"], correct: 2, explanation: "35/50 × 100 = 70%." },
+        { q: "What is 32% of 150?", options: ["42", "44", "46", "48"], correct: 3, explanation: "32% = 0.32, 0.32 × 150 = 48." },
+        { q: "What percent of 180 is 27?", options: ["12%", "15%", "18%", "20%"], correct: 1, explanation: "27/180 × 100 = 15%." },
+        { q: "What is 5% of 400?", options: ["15", "18", "20", "22"], correct: 2, explanation: "5% = 0.05, 0.05 × 400 = 20." },
+        { q: "What percent of 250 is 50?", options: ["15%", "18%", "20%", "22%"], correct: 2, explanation: "50/250 × 100 = 20%." },
+        { q: "What is 22% of 150?", options: ["30", "31", "32", "33"], correct: 3, explanation: "22% = 0.22, 0.22 × 150 = 33." },
+        { q: "What percent of 75 is 15?", options: ["15%", "18%", "20%", "22%"], correct: 2, explanation: "15/75 × 100 = 20%." },
+        { q: "What is 16% of 250?", options: ["36", "38", "40", "42"], correct: 2, explanation: "16% = 0.16, 0.16 × 250 = 40." },
+        { q: "What percent of 90 is 18?", options: ["15%", "18%", "20%", "22%"], correct: 2, explanation: "18/90 × 100 = 20%." },
+        { q: "What is 28% of 200?", options: ["50", "52", "54", "56"], correct: 3, explanation: "28% = 0.28, 0.28 × 200 = 56." },
+        { q: "What percent of 60 is 24?", options: ["35%", "38%", "40%", "42%"], correct: 2, explanation: "24/60 × 100 = 40%." },
+        { q: "What is 42% of 250?", options: ["95", "100", "105", "110"], correct: 2, explanation: "42% = 0.42, 0.42 × 250 = 105." },
+        { q: "What percent of 120 is 36?", options: ["25%", "28%", "30%", "32%"], correct: 2, explanation: "36/120 × 100 = 30%." },
+        { q: "What is 72% of 50?", options: ["32", "34", "36", "38"], correct: 2, explanation: "72% = 0.72, 0.72 × 50 = 36." },
+        { q: "What percent of 80 is 56?", options: ["60%", "65%", "70%", "75%"], correct: 2, explanation: "56/80 × 100 = 70%." },
+        { q: "What is 48% of 75?", options: ["34", "36", "38", "40"], correct: 1, explanation: "48% = 0.48, 0.48 × 75 = 36." },
+        { q: "What percent of 200 is 70?", options: ["30%", "32%", "35%", "38%"], correct: 2, explanation: "70/200 × 100 = 35%." },
+        { q: "What is 54% of 150?", options: ["71", "73", "81", "83"], correct: 2, explanation: "54% = 0.54, 0.54 × 150 = 81." },
+        { q: "What percent of 90 is 72?", options: ["70%", "75%", "80%", "85%"], correct: 2, explanation: "72/90 × 100 = 80%." },
+        { q: "What is 9% of 300?", options: ["25", "27", "30", "32"], correct: 1, explanation: "9% = 0.09, 0.09 × 300 = 27." },
+        { q: "What percent of 160 is 40?", options: ["20%", "23%", "25%", "28%"], correct: 2, explanation: "40/160 × 100 = 25%." }
       ],
       ratio: [
-        {
-          q: "If a:b = 2:3 and b:c = 4:5, what is a:b:c?",
-          options: ["8:12:15", "2:3:5", "4:6:5", "6:4:5"],
-          correct: 0,
-          explanation: "a:b = 2:3 = 8:12, b:c = 4:5 = 12:15, so a:b:c = 8:12:15"
-        }
+        { q: "If a:b = 2:3 and b:c = 4:5, what is a:b:c?", options: ["8:12:15", "2:3:5", "4:6:5", "6:4:5"], correct: 0, explanation: "a:b = 2:3 = 8:12, b:c = 4:5 = 12:15, so a:b:c = 8:12:15." },
+        { q: "What is the ratio of 12 to 18?", options: ["1:2", "2:3", "3:4", "4:5"], correct: 1, explanation: "12:18 = 2:3 after dividing by 6." },
+        { q: "If x:y = 3:4 and x = 12, what is y?", options: ["14", "15", "16", "18"], correct: 2, explanation: "3:4 = 12:y → 3y = 48 → y = 16." },
+        { q: "What is the ratio of 25 to 35?", options: ["3:4", "4:5", "5:7", "6:7"], correct: 2, explanation: "25:35 = 5:7 after dividing by 5." },
+        { q: "If a:b = 5:6 and b:c = 3:4, what is a:c?", options: ["5:8", "15:24", "5:4", "8:5"], correct: 0, explanation: "a:b = 5:6, b:c = 3:4. To combine, make b's ratio common: a:b = 15:18, b:c = 18:24. So a:c = 15:24 = 5:8." },
+        { q: "What is the ratio of 30 to 45?", options: ["2:3", "3:4", "4:5", "5:6"], correct: 0, explanation: "30:45 = 2:3 after dividing by 15." },
+        { q: "If x:y = 2:5 and y = 20, what is x?", options: ["6", "8", "10", "12"], correct: 1, explanation: "2:5 = x:20 → 5x = 40 → x = 8." },
+        { q: "What is the ratio of 14 to 21?", options: ["2:3", "3:4", "4:5", "5:6"], correct: 0, explanation: "14:21 = 2:3 after dividing by 7." },
+        { q: "If a:b = 1:2 and b:c = 2:3, what is a:b:c?", options: ["1:2:3", "2:3:4", "3:4:5", "4:5:6"], correct: 0, explanation: "a:b = 1:2, b:c = 2:3, so a:b:c = 1:2:3." },
+        { q: "What is the ratio of 16 to 24?", options: ["2:3", "3:4", "4:5", "5:6"], correct: 0, explanation: "16:24 = 2:3 after dividing by 8." },
+        { q: "If x:y = 4:5 and x = 16, what is y?", options: ["18", "20", "22", "24"], correct: 1, explanation: "4:5 = 16:y → 4y = 80 → y = 20." },
+        { q: "What is the ratio of 36 to 48?", options: ["2:3", "3:4", "4:5", "5:6"], correct: 1, explanation: "36:48 = 3:4 after dividing by 12." },
+        { q: "If a:b = 3:5 and b:c = 2:3, what is a:c?", options: ["2:5", "3:5", "6:15", "6:5"], correct: 0, explanation: "a:b = 3:5 = 6:10, b:c = 2:3 = 10:15. So a:c = 6:15 = 2:5." },
+        { q: "What is the ratio of 40 to 60?", options: ["2:3", "3:4", "4:5", "5:6"], correct: 0, explanation: "40:60 = 2:3 after dividing by 20." },
+        { q: "If x:y = 3:7 and y = 28, what is x?", options: ["10", "12", "14", "16"], correct: 1, explanation: "3:7 = x:28 → 7x = 84 → x = 12." },
+        { q: "What is the ratio of 18 to 27?", options: ["2:3", "3:4", "4:5", "5:6"], correct: 0, explanation: "18:27 = 2:3 after dividing by 9." },
+        { q: "If a:b = 4:7 and a = 20, what is b?", options: ["28", "30", "32", "35"], correct: 3, explanation: "4:7 = 20:b → 4b = 140 → b = 35." },
+        { q: "What is the ratio of 45 to 75?", options: ["3:5", "4:5", "5:6", "6:7"], correct: 0, explanation: "45:75 = 3:5 after dividing by 15." },
+        { q: "If x:y = 2:3 and x:z = 4:5, what is y:z?", options: ["6:5", "5:6", "8:5", "5:8"], correct: 0, explanation: "x:y = 2:3 = 4:6, x:z = 4:5, so y:z = 6:5." },
+        { q: "What is the ratio of 28 to 35?", options: ["3:4", "4:5", "5:6", "6:7"], correct: 1, explanation: "28:35 = 4:5 after dividing by 7." },
+        { q: "If a:b = 5:8 and b:c = 4:9, what is a:c?", options: ["5:18", "20:72", "5:9", "9:5"], correct: 0, explanation: "a:b = 5:8 = 20:32, b:c = 4:9 = 32:72. So a:c = 20:72 = 5:18." },
+        { q: "What is the ratio of 32 to 56?", options: ["4:7", "5:7", "6:7", "7:8"], correct: 0, explanation: "32:56 = 4:7 after dividing by 8." },
+        { q: "If x:y = 6:7 and y = 21, what is x?", options: ["16", "17", "18", "19"], correct: 2, explanation: "6:7 = x:21 → 7x = 126 → x = 18." },
+        { q: "What is the ratio of 48 to 72?", options: ["2:3", "3:4", "4:5", "5:6"], correct: 0, explanation: "48:72 = 2:3 after dividing by 24." },
+        { q: "If a:b = 7:9 and b:c = 3:5, what is a:c?", options: ["7:15", "21:45", "7:5", "5:7"], correct: 0, explanation: "a:b = 7:9, b:c = 3:5 = 9:15. So a:c = 7:15." },
+        { q: "What is the ratio of 54 to 72?", options: ["3:4", "4:5", "5:6", "6:7"], correct: 0, explanation: "54:72 = 3:4 after dividing by 18." },
+        { q: "If x:y = 8:15 and x = 24, what is y?", options: ["42", "43", "44", "45"], correct: 3, explanation: "8:15 = 24:y → 8y = 360 → y = 45." },
+        { q: "What is the ratio of 20 to 50?", options: ["2:5", "3:5", "4:5", "5:6"], correct: 0, explanation: "20:50 = 2:5 after dividing by 10." },
+        { q: "If a:b = 9:11 and a = 27, what is b?", options: ["30", "32", "33", "34"], correct: 2, explanation: "9:11 = 27:b → 9b = 297 → b = 33." },
+        { q: "What is the ratio of 56 to 84?", options: ["2:3", "3:4", "4:5", "5:6"], correct: 0, explanation: "56:84 = 2:3 after dividing by 28." },
+        { q: "If x:y = 10:13 and y = 39, what is x?", options: ["28", "29", "30", "31"], correct: 2, explanation: "10:13 = x:39 → 13x = 390 → x = 30." },
+        { q: "What is the ratio of 64 to 96?", options: ["2:3", "3:4", "4:5", "5:6"], correct: 0, explanation: "64:96 = 2:3 after dividing by 32." },
+        { q: "If a:b = 11:13 and a = 44, what is b?", options: ["50", "51", "52", "53"], correct: 2, explanation: "11:13 = 44:b → 11b = 572 → b = 52." },
+        { q: "What is the ratio of 72 to 108?", options: ["2:3", "3:4", "4:5", "5:6"], correct: 0, explanation: "72:108 = 2:3 after dividing by 36." },
+        { q: "If x:y = 12:17 and y = 51, what is x?", options: ["34", "35", "36", "37"], correct: 2, explanation: "12:17 = x:51 → 17x = 612 → x = 36." },
+        { q: "What is the ratio of 80 to 120?", options: ["2:3", "3:4", "4:5", "5:6"], correct: 0, explanation: "80:120 = 2:3 after dividing by 40." },
+        { q: "If a:b = 13:15 and b = 45, what is a?", options: ["37", "38", "39", "40"], correct: 2, explanation: "13:15 = a:45 → 15a = 585 → a = 39." },
+        { q: "What is the ratio of 85 to 120?", options: ["15:24", "17:24", "19:24", "21:24"], correct: 1, explanation: "85:120 = 17:24 after dividing by 5." },
+        { q: "If x:y = 14:19 and y = 57, what is x?", options: ["40", "41", "42", "43"], correct: 2, explanation: "14:19 = x:57 → 19x = 798 → x = 42." },
+        { q: "What is the ratio of 90 to 150?", options: ["3:5", "4:5", "5:6", "6:7"], correct: 0, explanation: "90:150 = 3:5 after dividing by 30." },
+        { q: "If a:b = 15:22 and b = 66, what is a?", options: ["43", "44", "45", "46"], correct: 2, explanation: "15:22 = a:66 → 22a = 990 → a = 45." },
+        { q: "What is the ratio of 96 to 144?", options: ["2:3", "3:4", "4:5", "5:6"], correct: 0, explanation: "96:144 = 2:3 after dividing by 48." },
+        { q: "If x:y = 16:25 and x = 48, what is y?", options: ["73", "74", "75", "76"], correct: 2, explanation: "16:25 = 48:y → 16y = 1200 → y = 75." },
+        { q: "What is the ratio of 105 to 140?", options: ["3:4", "4:5", "5:6", "6:7"], correct: 0, explanation: "105:140 = 3:4 after dividing by 35." },
+        { q: "If a:b = 17:23 and b = 46, what is a?", options: ["32", "33", "34", "35"], correct: 2, explanation: "17:23 = a:46 → 23a = 782 → a = 34." },
+        { q: "What is the ratio of 112 to 168?", options: ["2:3", "3:4", "4:5", "5:6"], correct: 0, explanation: "112:168 = 2:3 after dividing by 56." },
+        { q: "If x:y = 18:23 and x = 54, what is y?", options: ["67", "68", "69", "70"], correct: 2, explanation: "18:23 = 54:y → 18y = 1242 → y = 69." },
+        { q: "What is the ratio of 120 to 150?", options: ["3:4", "4:5", "5:6", "6:7"], correct: 1, explanation: "120:150 = 4:5 after dividing by 30." },
+        { q: "If a:b = 19:24 and a = 57, what is b?", options: ["70", "71", "72", "73"], correct: 2, explanation: "19:24 = 57:b → 19b = 1368 → b = 72." },
+        { q: "What is the ratio of 135 to 180?", options: ["3:4", "4:5", "5:6", "6:7"], correct: 0, explanation: "135:180 = 3:4 after dividing by 45." }
       ],
       timework: [
-        {
-          q: "A can complete a work in 10 days, B in 15 days. In how many days will they complete it together?",
-          options: ["5 days", "6 days", "8 days", "12 days"],
-          correct: 1,
-          explanation: "A's 1 day work = 1/10, B's 1 day work = 1/15, Together = 1/10 + 1/15 = 1/6, so 6 days"
-        }
+        { q: "A can complete a work in 10 days, B in 15 days. In how many days will they complete it together?", options: ["5 days", "6 days", "8 days", "12 days"], correct: 1, explanation: "A's 1 day work = 1/10, B's 1 day work = 1/15. Together = 1/10 + 1/15 = 1/6, so 6 days." },
+        { q: "A can do a work in 8 days. B is twice as efficient as A. How long will B take?", options: ["2 days", "3 days", "4 days", "5 days"], correct: 2, explanation: "If B is twice as efficient, B takes half the time. 8/2 = 4 days." },
+        { q: "A completes a work in 12 days, B in 18 days. If A and B work together, how long will they take?", options: ["6 days", "7.2 days", "8 days", "9 days"], correct: 1, explanation: "A's 1 day = 1/12, B's = 1/18. Together = 1/12 + 1/18 = 5/36. Time = 36/5 = 7.2 days." },
+        { q: "If 5 men can complete a work in 10 days, in how many days will 10 men complete the work?", options: ["3 days", "4 days", "5 days", "6 days"], correct: 2, explanation: "Men and days are inversely proportional. 5 × 10 = 10 × d → d = 5 days." },
+        { q: "A can do a work in 6 days, B in 9 days. Together they complete it in?", options: ["3.6 days", "4.2 days", "4.8 days", "5.4 days"], correct: 0, explanation: "1/6 + 1/9 = 5/18. Time = 18/5 = 3.6 days." },
+        { q: "If 8 men can do a work in 15 days, how many men are needed to do it in 10 days?", options: ["10", "12", "14", "16"], correct: 1, explanation: "8 × 15 = M × 10 → M = 12." },
+        { q: "A can complete a work in 20 days. A and B together can complete it in 12 days. How long will B take alone?", options: ["25 days", "30 days", "35 days", "40 days"], correct: 1, explanation: "B's 1 day work = 1/12 - 1/20 = 1/30. B takes 30 days." },
+        { q: "If 3 men or 4 women can do a work in 8 days, how many days will 6 men and 2 women take?", options: ["2 days", "3 days", "4 days", "5 days"], correct: 1, explanation: "3 men = 4 women, so 6 men + 2 women = 8 men + 2 women = 10 women. 4 women in 8 days → 10 women in 4×8/10 = 3.2 days." },
+        { q: "A does a work in 15 days, B in 20 days. They work together for 5 days, then A leaves. How long will B take to finish?", options: ["5 days", "6.67 days", "8.33 days", "10 days"], correct: 0, explanation: "Together in 5 days: 5(1/15 + 1/20) = 5×7/60 = 7/12. Remaining = 5/12. B's time = (5/12)/(1/20) = 5/12 × 20 = 8.33 days." },
+        { q: "If 10 men can build a wall in 12 days, in how many days will 15 men build it?", options: ["6 days", "7 days", "8 days", "9 days"], correct: 2, explanation: "10 × 12 = 15 × d → d = 8 days." },
+        { q: "A can do a work in 24 days, B in 36 days. Together they complete it in?", options: ["12.4 days", "13.6 days", "14.4 days", "15.6 days"], correct: 2, explanation: "1/24 + 1/36 = 5/72. Time = 72/5 = 14.4 days." },
+        { q: "If 6 men or 9 women can do a work in 12 days, how many days will 8 men and 6 women take?", options: ["4 days", "5 days", "6 days", "7 days"], correct: 2, explanation: "6 men = 9 women. 1 man = 1.5 women. 8 men + 6 women = 12 + 6 = 18 women. 9 women in 12 days → 18 women in 6 days." },
+        { q: "A can do a work in 10 days, B in 15 days. They work together for 3 days. How much work is done?", options: ["1/2", "1/3", "1/4", "1/5"], correct: 0, explanation: "3(1/10 + 1/15) = 3×1/6 = 1/2." },
+        { q: "If 12 men can complete a work in 8 days, in how many days will 16 men complete it?", options: ["4 days", "5 days", "6 days", "7 days"], correct: 2, explanation: "12 × 8 = 16 × d → d = 6 days." },
+        { q: "A can do a work in 30 days, B in 45 days. Together they complete it in?", options: ["16 days", "17 days", "18 days", "19 days"], correct: 2, explanation: "1/30 + 1/45 = 1/18. Time = 18 days." },
+        { q: "If 9 men can do a work in 20 days, how many men are needed to do it in 15 days?", options: ["10", "11", "12", "13"], correct: 2, explanation: "9 × 20 = M × 15 → M = 12." },
+        { q: "A can complete a work in 16 days. A and B together can complete it in 12 days. How long will B take alone?", options: ["24 days", "36 days", "48 days", "60 days"], correct: 2, explanation: "B's 1 day = 1/12 - 1/16 = 1/48. B takes 48 days." },
+        { q: "If 4 men or 6 women can do a work in 10 days, how many days will 8 men and 4 women take?", options: ["3 days", "4 days", "5 days", "6 days"], correct: 0, explanation: "4 men = 6 women. 8 men + 4 women = 12 + 4 = 16 women. 6 women in 10 days → 16 women in 6×10/16 = 3.75 days." },
+        { q: "A does a work in 18 days, B in 27 days. They work together for 6 days, then A leaves. How long will B take to finish?", options: ["9 days", "10.5 days", "12 days", "13.5 days"], correct: 2, explanation: "Together in 6 days: 6(1/18 + 1/27) = 6×5/54 = 5/9. Remaining = 4/9. B's time = (4/9)/(1/27) = 12 days." },
+        { q: "If 15 men can build a wall in 8 days, in how many days will 20 men build it?", options: ["4 days", "5 days", "6 days", "7 days"], correct: 2, explanation: "15 × 8 = 20 × d → d = 6 days." },
+        { q: "A can do a work in 40 days, B in 60 days. Together they complete it in?", options: ["22 days", "24 days", "26 days", "28 days"], correct: 1, explanation: "1/40 + 1/60 = 5/120 = 1/24. Time = 24 days." },
+        { q: "If 10 men or 15 women can do a work in 18 days, how many days will 20 men and 10 women take?", options: ["6 days", "7 days", "8 days", "9 days"], correct: 0, explanation: "10 men = 15 women. 20 men + 10 women = 30 + 10 = 40 women. 15 women in 18 days → 40 women in 15×18/40 = 6.75 days." },
+        { q: "A can do a work in 14 days, B in 21 days. They work together for 4 days. How much work is done?", options: ["1/2", "2/3", "3/4", "4/5"], correct: 1, explanation: "4(1/14 + 1/21) = 4×5/42 = 20/42 = 10/21 = 0.476." },
+        { q: "If 18 men can complete a work in 10 days, in how many days will 15 men complete it?", options: ["10 days", "11 days", "12 days", "13 days"], correct: 2, explanation: "18 × 10 = 15 × d → d = 12 days." },
+        { q: "A can do a work in 35 days, B in 50 days. Together they complete it in?", options: ["18.5 days", "19.5 days", "20.5 days", "21.5 days"], correct: 2, explanation: "1/35 + 1/50 = 17/350. Time = 350/17 = 20.6 days." },
+        { q: "If 20 men can do a work in 24 days, how many men are needed to do it in 16 days?", options: ["25", "28", "30", "32"], correct: 2, explanation: "20 × 24 = M × 16 → M = 30." },
+        { q: "A can complete a work in 28 days. A and B together can complete it in 16 days. How long will B take alone?", options: ["30 days", "32 days", "34 days", "36 days"], correct: 2, explanation: "B's 1 day = 1/16 - 1/28 = 3/112. B takes 112/3 = 37.3 days." },
+        { q: "If 5 men or 8 women can do a work in 24 days, how many days will 15 men and 6 women take?", options: ["6 days", "7 days", "8 days", "9 days"], correct: 0, explanation: "5 men = 8 women. 15 men + 6 women = 24 + 6 = 30 women. 8 women in 24 days → 30 women in 8×24/30 = 6.4 days." },
+        { q: "A does a work in 25 days, B in 30 days. They work together for 5 days, then A leaves. How long will B take to finish?", options: ["17 days", "19 days", "21 days", "23 days"], correct: 1, explanation: "Together in 5 days: 5(1/25 + 1/30) = 5×11/150 = 11/30. Remaining = 19/30. B's time = (19/30)/(1/30) = 19 days." },
+        { q: "If 24 men can build a wall in 7 days, in how many days will 14 men build it?", options: ["10 days", "11 days", "12 days", "13 days"], correct: 2, explanation: "24 × 7 = 14 × d → d = 12 days." },
+        { q: "A can do a work in 50 days, B in 75 days. Together they complete it in?", options: ["28 days", "29 days", "30 days", "31 days"], correct: 2, explanation: "1/50 + 1/75 = 5/150 = 1/30. Time = 30 days." },
+        { q: "If 12 men or 20 women can do a work in 15 days, how many days will 18 men and 10 women take?", options: ["6 days", "7 days", "8 days", "9 days"], correct: 0, explanation: "12 men = 20 women. 18 men + 10 women = 30 + 10 = 40 women. 20 women in 15 days → 40 women in 20×15/40 = 7.5 days." },
+        { q: "A can do a work in 22 days, B in 33 days. They work together for 6 days. How much work is done?", options: ["1/2", "1/3", "1/4", "1/5"], correct: 0, explanation: "6(1/22 + 1/33) = 6×5/66 = 30/66 = 5/11 = 0.455." },
+        { q: "If 30 men can complete a work in 12 days, in how many days will 20 men complete it?", options: ["16 days", "17 days", "18 days", "19 days"], correct: 2, explanation: "30 × 12 = 20 × d → d = 18 days." },
+        { q: "A can do a work in 45 days, B in 60 days. Together they complete it in?", options: ["24.5 days", "25.7 days", "26.8 days", "27.2 days"], correct: 1, explanation: "1/45 + 1/60 = 7/180. Time = 180/7 = 25.7 days." },
+        { q: "If 14 men can do a work in 30 days, how many men are needed to do it in 20 days?", options: ["18", "19", "20", "21"], correct: 2, explanation: "14 × 30 = M × 20 → M = 21." },
+        { q: "A can complete a work in 32 days. A and B together can complete it in 18 days. How long will B take alone?", options: ["36 days", "39 days", "42 days", "45 days"], correct: 1, explanation: "B's 1 day = 1/18 - 1/32 = 7/288. B takes 288/7 = 41.1 days." },
+        { q: "If 6 men or 10 women can do a work in 20 days, how many days will 12 men and 5 women take?", options: ["8 days", "9 days", "10 days", "11 days"], correct: 0, explanation: "6 men = 10 women. 12 men + 5 women = 20 + 5 = 25 women. 10 women in 20 days → 25 women in 10×20/25 = 8 days." },
+        { q: "A does a work in 36 days, B in 48 days. They work together for 8 days, then A leaves. How long will B take to finish?", options: ["24 days", "26 days", "28 days", "30 days"], correct: 2, explanation: "Together in 8 days: 8(1/36 + 1/48) = 8×7/144 = 56/144 = 7/18. Remaining = 11/18. B's time = (11/18)/(1/48) = 29.3 days." },
+        { q: "If 32 men can build a wall in 5 days, in how many days will 20 men build it?", options: ["6 days", "7 days", "8 days", "9 days"], correct: 2, explanation: "32 × 5 = 20 × d → d = 8 days." },
+        { q: "A can do a work in 60 days, B in 90 days. Together they complete it in?", options: ["34 days", "35 days", "36 days", "37 days"], correct: 2, explanation: "1/60 + 1/90 = 5/180 = 1/36. Time = 36 days." },
+        { q: "If 16 men or 24 women can do a work in 12 days, how many days will 24 men and 8 women take?", options: ["5 days", "6 days", "7 days", "8 days"], correct: 0, explanation: "16 men = 24 women. 24 men + 8 women = 36 + 8 = 44 women. 24 women in 12 days → 44 women in 24×12/44 = 6.55 days." },
+        { q: "A can do a work in 28 days, B in 42 days. They work together for 7 days. How much work is done?", options: ["1/2", "1/3", "1/4", "1/5"], correct: 0, explanation: "7(1/28 + 1/42) = 7×5/84 = 35/84 = 5/12 = 0.417." },
+        { q: "If 42 men can complete a work in 8 days, in how many days will 24 men complete it?", options: ["12 days", "13 days", "14 days", "15 days"], correct: 2, explanation: "42 × 8 = 24 × d → d = 14 days." },
+        { q: "A can do a work in 56 days, B in 72 days. Together they complete it in?", options: ["30.5 days", "31.5 days", "32.5 days", "33.5 days"], correct: 1, explanation: "1/56 + 1/72 = 128/4032 = 1/31.5. Time = 31.5 days." },
+        { q: "If 22 men can do a work in 36 days, how many men are needed to do it in 24 days?", options: ["30", "31", "32", "33"], correct: 2, explanation: "22 × 36 = M × 24 → M = 33." },
+        { q: "A can complete a work in 48 days. A and B together can complete it in 30 days. How long will B take alone?", options: ["70 days", "75 days", "80 days", "85 days"], correct: 2, explanation: "B's 1 day = 1/30 - 1/48 = 18/1440 = 1/80. B takes 80 days." },
+        { q: "If 8 men or 12 women can do a work in 15 days, how many days will 16 men and 4 women take?", options: ["6 days", "7 days", "8 days", "9 days"], correct: 1, explanation: "8 men = 12 women. 16 men + 4 women = 24 + 4 = 28 women. 12 women in 15 days → 28 women in 12×15/28 = 6.43 days." },
+        { q: "A does a work in 44 days, B in 55 days. They work together for 10 days, then A leaves. How long will B take to finish?", options: ["25 days", "27.5 days", "30 days", "32.5 days"], correct: 1, explanation: "Together in 10 days: 10(1/44 + 1/55) = 10×99/2420 = 0.409. Remaining = 0.591. B's time = 0.591 × 55 = 32.5 days." },
+        { q: "If 50 men can build a wall in 6 days, in how many days will 30 men build it?", options: ["8 days", "9 days", "10 days", "11 days"], correct: 2, explanation: "50 × 6 = 30 × d → d = 10 days." }
       ],
       custom: [
-        {
-          q: "Welcome to Custom Questions! Add your own questions in the admin panel.",
-          options: ["Start creating!", "Explore topics", "Learn more", "Get started"],
-          correct: 0,
-          explanation: "Use the admin panel to add your own custom questions to this topic."
-        }
+        { q: "Welcome to Custom Questions! Add your own questions in the admin panel.", options: ["Start creating!", "Explore topics", "Learn more", "Get started"], correct: 0, explanation: "Use the admin panel to add your own custom questions to this topic." },
+        { q: "Custom Question 2: What would you like to learn?", options: ["Mathematics", "Science", "History", "Geography"], correct: 0, explanation: "Choose your preferred subject." },
+        { q: "Custom Question 3: How many topics are available?", options: ["5", "6", "7", "8"], correct: 2, explanation: "There are 7 topics available." },
+        { q: "Custom Question 4: What is the color of the sky?", options: ["Red", "Green", "Blue", "Yellow"], correct: 2, explanation: "The sky is blue." },
+        { q: "Custom Question 5: Which planet is known as the Red Planet?", options: ["Venus", "Mars", "Jupiter", "Saturn"], correct: 1, explanation: "Mars is known as the Red Planet." },
+        { q: "Custom Question 6: What is the capital of France?", options: ["London", "Berlin", "Madrid", "Paris"], correct: 3, explanation: "Paris is the capital of France." },
+        { q: "Custom Question 7: What is 2 + 2?", options: ["3", "4", "5", "6"], correct: 1, explanation: "2 + 2 = 4." },
+        { q: "Custom Question 8: What is the shape of a circle?", options: ["Square", "Triangle", "Round", "Rectangle"], correct: 2, explanation: "A circle is round." },
+        { q: "Custom Question 9: How many days are in a week?", options: ["5", "6", "7", "8"], correct: 2, explanation: "There are 7 days in a week." },
+        { q: "Custom Question 10: What is the largest ocean?", options: ["Atlantic", "Indian", "Arctic", "Pacific"], correct: 3, explanation: "The Pacific Ocean is the largest." },
+        { q: "Custom Question 11: What is the currency of Japan?", options: ["Dollar", "Euro", "Yen", "Pound"], correct: 2, explanation: "The currency of Japan is Yen." },
+        { q: "Custom Question 12: How many continents are there?", options: ["5", "6", "7", "8"], correct: 2, explanation: "There are 7 continents." },
+        { q: "Custom Question 13: What is the boiling point of water?", options: ["80°C", "90°C", "100°C", "110°C"], correct: 2, explanation: "Water boils at 100°C." },
+        { q: "Custom Question 14: What is the national sport of India?", options: ["Cricket", "Hockey", "Football", "Badminton"], correct: 0, explanation: "Cricket is the national sport of India." },
+        { q: "Custom Question 15: What is the square of 5?", options: ["20", "25", "30", "35"], correct: 1, explanation: "5² = 25." },
+        { q: "Custom Question 16: What is the national flower of India?", options: ["Rose", "Lotus", "Lily", "Sunflower"], correct: 1, explanation: "Lotus is the national flower of India." },
+        { q: "Custom Question 17: What is the speed of light?", options: ["3×10⁸ m/s", "3×10⁹ m/s", "3×10¹⁰ m/s", "3×10¹¹ m/s"], correct: 0, explanation: "Speed of light is 3×10⁸ m/s." },
+        { q: "Custom Question 18: What is the value of π (pi)?", options: ["3.14", "3.16", "3.18", "3.20"], correct: 0, explanation: "π ≈ 3.14." },
+        { q: "Custom Question 19: What is the national animal of India?", options: ["Lion", "Tiger", "Elephant", "Peacock"], correct: 1, explanation: "Tiger is the national animal of India." },
+        { q: "Custom Question 20: What is 1 kilometer in meters?", options: ["100", "500", "1000", "10000"], correct: 2, explanation: "1 km = 1000 m." },
+        { q: "Custom Question 21: What is the national bird of India?", options: ["Eagle", "Peacock", "Sparrow", "Crow"], correct: 1, explanation: "Peacock is the national bird of India." },
+        { q: "Custom Question 22: What is the atomic number of Carbon?", options: ["4", "5", "6", "7"], correct: 2, explanation: "Carbon has atomic number 6." },
+        { q: "Custom Question 23: What is the freezing point of water?", options: ["-4°C", "-2°C", "0°C", "2°C"], correct: 2, explanation: "Water freezes at 0°C." },
+        { q: "Custom Question 24: What is the national tree of India?", options: ["Neem", "Banyan", "Peepal", "Mango"], correct: 1, explanation: "Banyan is the national tree of India." },
+        { q: "Custom Question 25: What is the value of 2³?", options: ["6", "8", "9", "10"], correct: 1, explanation: "2³ = 8." },
+        { q: "Custom Question 26: What is the national fruit of India?", options: ["Apple", "Mango", "Banana", "Orange"], correct: 1, explanation: "Mango is the national fruit of India." },
+        { q: "Custom Question 27: What is the speed of sound?", options: ["343 m/s", "343 km/h", "3430 m/s", "3430 km/h"], correct: 0, explanation: "Speed of sound is 343 m/s." },
+        { q: "Custom Question 28: What is the value of √64?", options: ["6", "7", "8", "9"], correct: 2, explanation: "√64 = 8." },
+        { q: "Custom Question 29: What is the national river of India?", options: ["Ganga", "Yamuna", "Sindhu", "Brahmaputra"], correct: 0, explanation: "Ganga is the national river of India." },
+        { q: "Custom Question 30: What is 10% of 100?", options: ["5", "10", "15", "20"], correct: 1, explanation: "10% of 100 = 10." },
+        { q: "Custom Question 31: What is the chemical symbol for Gold?", options: ["Ag", "Au", "Fe", "Cu"], correct: 1, explanation: "Gold's symbol is Au." },
+        { q: "Custom Question 32: What is the value of √81?", options: ["7", "8", "9", "10"], correct: 2, explanation: "√81 = 9." },
+        { q: "Custom Question 33: What is the national game of India?", options: ["Cricket", "Hockey", "Football", "Badminton"], correct: 0, explanation: "Cricket is the national game of India." },
+        { q: "Custom Question 34: What is 3 × 3 × 3?", options: ["18", "24", "27", "30"], correct: 2, explanation: "3³ = 27." },
+        { q: "Custom Question 35: What is the capital of Japan?", options: ["Tokyo", "Seoul", "Beijing", "Bangkok"], correct: 0, explanation: "Tokyo is the capital of Japan." },
+        { q: "Custom Question 36: What is the atomic number of Oxygen?", options: ["6", "7", "8", "9"], correct: 2, explanation: "Oxygen has atomic number 8." },
+        { q: "Custom Question 37: What is the value of 2⁵?", options: ["16", "24", "32", "40"], correct: 2, explanation: "2⁵ = 32." },
+        { q: "Custom Question 38: What is the national flag called?", options: ["Tricolor", "Bicolor", "Monochrome", "Rainbow"], correct: 0, explanation: "The national flag is called the Tricolor." },
+        { q: "Custom Question 39: What is 6 × 7?", options: ["36", "38", "40", "42"], correct: 3, explanation: "6 × 7 = 42." },
+        { q: "Custom Question 40: What is the capital of Italy?", options: ["Rome", "Paris", "Berlin", "Madrid"], correct: 0, explanation: "Rome is the capital of Italy." },
+        { q: "Custom Question 41: What is the atomic number of Nitrogen?", options: ["5", "6", "7", "8"], correct: 2, explanation: "Nitrogen has atomic number 7." },
+        { q: "Custom Question 42: What is the value of 4²?", options: ["14", "16", "18", "20"], correct: 1, explanation: "4² = 16." },
+        { q: "Custom Question 43: What is the national anthem of India?", options: ["Jana Gana Mana", "Vande Mataram", "Saare Jahan Se Achha", "Jai Ho"], correct: 0, explanation: "Jana Gana Mana is the national anthem." },
+        { q: "Custom Question 44: What is 8 × 9?", options: ["64", "70", "72", "74"], correct: 2, explanation: "8 × 9 = 72." },
+        { q: "Custom Question 45: What is the capital of England?", options: ["London", "Manchester", "Birmingham", "Liverpool"], correct: 0, explanation: "London is the capital of England." },
+        { q: "Custom Question 46: What is the atomic number of Hydrogen?", options: ["0", "1", "2", "3"], correct: 1, explanation: "Hydrogen has atomic number 1." },
+        { q: "Custom Question 47: What is the value of 5³?", options: ["100", "115", "125", "130"], correct: 2, explanation: "5³ = 125." },
+        { q: "Custom Question 48: What is the national emblem of India?", options: ["Ashoka Chakra", "Lion Capital", "National Bird", "National Tree"], correct: 1, explanation: "Lion Capital is the national emblem." },
+        { q: "Custom Question 49: What is 7 × 11?", options: ["70", "72", "75", "77"], correct: 3, explanation: "7 × 11 = 77." },
+        { q: "Custom Question 50: What is the capital of Russia?", options: ["Moscow", "St. Petersburg", "Kiev", "Minsk"], correct: 0, explanation: "Moscow is the capital of Russia." }
       ]
     };
 
@@ -1224,7 +1533,7 @@
     function initPage() {
       loadAdminQuestions();
       renderTopicSelection();
-      loadBackendQuestions(); // async - re-renders topic grid once loaded
+      loadBackendQuestions();
       checkAdminAccess();
       initUserProfile();
       initializeDragAndDrop();
@@ -1236,7 +1545,7 @@
       return adminQuestions;
     }
 
-    // Get questions for a topic (random selection)
+    // Get questions for a topic (random selection - 25 questions)
     function getQuestionsForTopic(topic) {
       const adminQuestions = loadAdminQuestions();
       const topicQuestions = adminQuestions[topic] || [];
@@ -1250,8 +1559,8 @@
         return [];
       }
       
-      // Select random questions (max 10)
-      const numQuestions = Math.min(10, allQuestions.length);
+      // Select random questions (max 25)
+      const numQuestions = Math.min(25, allQuestions.length);
       const shuffled = allQuestions.sort(() => 0.5 - Math.random());
       return shuffled.slice(0, numQuestions);
     }
@@ -1266,7 +1575,6 @@
         const questions = getQuestionsForTopic(topic);
         const questionCount = questions.length;
         
-        // Add custom class for custom topic
         const customClass = topic === 'custom' ? 'custom-topic' : '';
         
         html += `
@@ -1297,7 +1605,7 @@
       topicGrid.innerHTML = html;
     }
 
-    // Enhanced Bulk Upload Functions
+    // Bulk Upload Functions
     function toggleBulkUpload() {
         const bulkUpload = document.getElementById("bulkUpload");
         const questionForm = document.getElementById("questionForm");
@@ -1314,7 +1622,6 @@
         document.getElementById("progressText").textContent = "Processing...";
     }
 
-    // Drag and drop functionality
     function initializeDragAndDrop() {
         const dropZone = document.getElementById('dropZone');
         
@@ -1341,7 +1648,6 @@
     function handleFileUpload(file) {
         if (!file) return;
         
-        // Validate file type
         if (!file.name.endsWith('.json')) {
             showNotification('Please upload a JSON file only!', 'error');
             return;
@@ -1442,7 +1748,6 @@
             let errorCount = 0;
             let skippedCount = 0;
             
-            // Show progress
             const progressBar = document.getElementById("progressBar");
             const progressText = document.getElementById("progressText");
             const uploadProgress = document.getElementById("uploadProgress");
@@ -1451,7 +1756,6 @@
             uploadProgress.style.display = "block";
             uploadBtn.disabled = true;
             
-            // Process questions with progress updates
             newQuestions.forEach((question, index) => {
                 const progress = ((index + 1) / newQuestions.length) * 100;
                 progressBar.style.width = `${progress}%`;
@@ -1462,7 +1766,6 @@
                     return;
                 }
                 
-                // Check for duplicates
                 const existingQuestions = adminQuestions[question.topic] || [];
                 const isDuplicate = existingQuestions.some(existingQ => 
                     existingQ.q === question.q
@@ -1488,15 +1791,12 @@
                 addedCount++;
             });
             
-            // Save to localStorage
             localStorage.setItem("adminQuestions", JSON.stringify(adminQuestions));
             
-            // Reset form and update UI
             resetBulkUploadForm();
             loadQuestionsList();
             renderTopicSelection();
             
-            // Show result
             let message = `Successfully uploaded ${addedCount} questions!`;
             if (errorCount > 0) message += ` ${errorCount} questions had errors.`;
             if (skippedCount > 0) message += ` ${skippedCount} duplicates skipped.`;
@@ -1545,7 +1845,6 @@
     function exportQuestions() {
         const adminQuestions = JSON.parse(localStorage.getItem("adminQuestions")) || {};
         
-        // Flatten questions array for export
         const exportData = [];
         Object.keys(adminQuestions).forEach(topic => {
             adminQuestions[topic].forEach(question => {
@@ -1585,9 +1884,7 @@
         }
     }
 
-    // Enhanced notification system
     function showNotification(message, type = "info") {
-        // Remove existing notifications
         const existingNotifications = document.querySelectorAll('.custom-notification');
         existingNotifications.forEach(notif => notif.remove());
         
@@ -1611,7 +1908,6 @@
         
         document.body.appendChild(notification);
         
-        // Auto remove after 5 seconds
         setTimeout(() => {
             if (notification.parentNode) {
                 notification.remove();
@@ -1629,22 +1925,18 @@
         return;
       }
       
-      // Hide topic selection, show quiz
       document.getElementById('topicSelection').style.display = 'none';
       document.getElementById('quizSection').style.display = 'block';
       document.getElementById('resultSection').style.display = 'none';
       
-      // Initialize quiz
       currentQuestionIndex = 0;
       userAnswers = new Array(currentQuestions.length).fill(null);
-      timeLeft = 600; // 10 minutes
+      timeLeft = 2700; // 45 minutes for 25 questions
       
-      // Set topic name
       document.getElementById("topicName").textContent = topicData[topic].name + " Test";
       document.getElementById("questionCount").textContent = `${currentQuestions.length} Questions`;
       document.getElementById("totalQuestions").textContent = currentQuestions.length;
       
-      // Start timer and display first question
       startTimer();
       displayQuestion();
       updateNavButtons();
@@ -1691,7 +1983,6 @@
 
       const newQuestion = { topic, q: question, options, correct: correctOption, explanation };
 
-      // Try to save to MongoDB via the backend first
       let savedToBackend = false;
       try {
         const res = await fetch(`${API_URL}/questions`, {
@@ -1707,7 +1998,6 @@
       if (savedToBackend) {
         await loadBackendQuestions();
       } else {
-        // Fall back to localStorage so the question isn't lost
         const adminQuestions = loadAdminQuestions();
         if (!adminQuestions[topic]) {
           adminQuestions[topic] = [];
@@ -1716,7 +2006,6 @@
         localStorage.setItem("adminQuestions", JSON.stringify(adminQuestions));
       }
       
-      // Reset form and update UI
       document.getElementById("questionForm").reset();
       toggleQuestionForm();
       loadQuestionsList();
@@ -1781,7 +2070,7 @@
     }
 
     function getUserScore(topic) {
-      const testResults = JSON.parse(localStorage.getItem("testResults")) || [];
+      const testResults = JSON.parse(localStorage.getItem("testResults") || "[]");
       const topicResults = testResults.filter(result => result.topic === topic);
       if (topicResults.length === 0) return 0;
       

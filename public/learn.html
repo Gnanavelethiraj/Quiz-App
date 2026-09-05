@@ -148,7 +148,7 @@
     
     .hero p {
       font-size: 1.2rem;
-      color: var(--gray);
+      color: white;
       max-width: 700px;
       margin: 0 auto 30px;
       animation: fadeInUp 1.2s ease;
@@ -256,12 +256,33 @@
       color: white;
       text-decoration: none;
       display: inline-block;
+      margin: 3px;
     }
     
     .btn-learn:hover {
       transform: translateY(-3px);
       box-shadow: 0 8px 15px rgba(76, 175, 239, 0.4);
       background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: white;
+    }
+    
+    .btn-pdf {
+      background: linear-gradient(135deg, #dc3545, #c82333);
+      border: none;
+      border-radius: 30px;
+      padding: 10px 25px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      color: white;
+      text-decoration: none;
+      display: inline-block;
+      margin: 3px;
+    }
+    
+    .btn-pdf:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(220, 53, 69, 0.4);
+      background: linear-gradient(135deg, #c82333, #bd2130);
       color: white;
     }
 
@@ -490,6 +511,11 @@
       100% { transform: translate(0, 0) rotate(360deg); }
     }
     
+    /* Lesson content styles */
+    .lesson-content-text {
+      color: #ffd93d !important;
+    }
+    
     /* Responsive */
     @media (max-width: 992px) {
       .hero h1 {
@@ -592,8 +618,12 @@
             <p>Learn about prime numbers, factors, multiples, divisibility rules, and number properties with detailed examples.</p>
             <button type="button" class="btn btn-learn" onclick="openLesson('numbers')">View Notes</button>
             <a href="test.html?topic=numbers" class="btn btn-learn">Take Test</a>
+            <a href="Pdfs/Number_System_Aptitude_Learning_Notes.pdf" target="_blank" class="btn btn-pdf">
+              <i class="fa-solid fa-file-pdf"></i> PDF
+            </a>
           </div>
         </div>
+        
         <div class="col-lg-4 col-md-6">
           <div class="topic-card">
             <div class="topic-icon">
@@ -603,8 +633,12 @@
             <p>Learn how to calculate Least Common Multiple (LCM) and Highest Common Factor (HCF) with step-by-step methods.</p>
             <button type="button" class="btn btn-learn" onclick="openLesson('lcmhcf')">View Notes</button>
             <a href="test.html?topic=lcmhcf" class="btn btn-learn">Take Test</a>
+            <a href="Pdfs/LCM_HCF_Aptitude_Complete_Learning_Notes.pdf" target="_blank" class="btn btn-pdf">
+              <i class="fa-solid fa-file-pdf"></i> PDF
+            </a>
           </div>
         </div>
+        
         <div class="col-lg-4 col-md-6">
           <div class="topic-card">
             <div class="topic-icon">
@@ -614,8 +648,12 @@
             <p>Understand expressions, equations, identities, and algebraic formulas with practical applications.</p>
             <button type="button" class="btn btn-learn" onclick="openLesson('algebra')">View Notes</button>
             <a href="test.html?topic=algebra" class="btn btn-learn">Take Test</a>
+            <a href="Pdfs/Algebra_Aptitude_Complete_Learning_Notes.pdf" target="_blank" class="btn btn-pdf">
+              <i class="fa-solid fa-file-pdf"></i> PDF
+            </a>
           </div>
         </div>
+        
         <div class="col-lg-4 col-md-6">
           <div class="topic-card">
             <div class="topic-icon">
@@ -625,8 +663,12 @@
             <p>Master percentage calculations, increase/decrease problems, and their real-world applications.</p>
             <button type="button" class="btn btn-learn" onclick="openLesson('percentage')">View Notes</button>
             <a href="test.html?topic=percentage" class="btn btn-learn">Take Test</a>
+            <a href="Pdfs/Percentage_Aptitude_Complete_Learning_Notes.pdf" target="_blank" class="btn btn-pdf">
+              <i class="fa-solid fa-file-pdf"></i> PDF
+            </a>
           </div>
         </div>
+        
         <div class="col-lg-4 col-md-6">
           <div class="topic-card">
             <div class="topic-icon">
@@ -636,8 +678,12 @@
             <p>Understand ratios, proportions, and their applications in problem-solving with practical examples.</p>
             <button type="button" class="btn btn-learn" onclick="openLesson('ratio')">View Notes</button>
             <a href="test.html?topic=ratio" class="btn btn-learn">Take Test</a>
+            <a href="Pdfs/Ratio_Proportion_Aptitude_Complete_Learning_Notes.pdf" target="_blank" class="btn btn-pdf">
+              <i class="fa-solid fa-file-pdf"></i> PDF
+            </a>
           </div>
         </div>
+        
         <div class="col-lg-4 col-md-6">
           <div class="topic-card">
             <div class="topic-icon">
@@ -647,6 +693,9 @@
             <p>Learn to solve problems related to time management, work efficiency, and collaborative work scenarios.</p>
             <button type="button" class="btn btn-learn" onclick="openLesson('timework')">View Notes</button>
             <a href="test.html?topic=timework" class="btn btn-learn">Take Test</a>
+            <a href="Pdfs/Time_and_Work_Aptitude_Complete_Learning_Notes.pdf" target="_blank" class="btn btn-pdf">
+              <i class="fa-solid fa-file-pdf"></i> PDF
+            </a>
           </div>
         </div>
       </div>
@@ -739,6 +788,7 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
     // Navbar scroll effect
     window.addEventListener('scroll', function() {
@@ -908,7 +958,7 @@
     });
 
     // ---------------- Lesson Notes (from MongoDB) ----------------
-    const API_URL = "http://localhost:5000/api";
+    const API_URL = "/api";
 
     // Small offline fallback so the modal still shows something useful
     // if the backend server isn't running.
@@ -919,6 +969,93 @@
       percentage: "Percentage conversions, increase/decrease, and successive changes.",
       ratio: "Comparing quantities, combining ratios, and dividing amounts proportionally.",
       timework: "Work-rate reasoning for people, machines, and pipes."
+    };
+
+    // Complete lesson data for PDF generation
+    const lessonData = {
+      numbers: {
+        title: "Numbers",
+        icon: "fa-calculator",
+        summary: "Number systems, prime divisors, divisibility rules and factors — the foundation every other subject builds on.",
+        sections: [
+          { heading: "Types of numbers", content: "Natural numbers (1, 2, 3, ...) count things. Whole numbers add 0. Integers include negative numbers. Rational numbers can be written as a fraction p/q (q ≠ 0), like 0.75 = 3/4. Irrational numbers are complex like 2iπ. Every rational and irrational number together makes up the real number system." },
+          { heading: "Prime and composite numbers", content: "Prime numbers have exactly two factors: 1 and itself (2, 3, 5, 7, ...). 2 is the only even prime number. Composite numbers have more than two factors (4, 6, 8, 9, ...). 1 is neither prime nor composite." },
+          { heading: "Divisibility rules", content: "By 2: last digit is even. By 3: digit sum divisible by 3. By 4: last two digits divisible by 4. By 5: last digit is 5. By 6: divisible by both 2 and 3. By 9: digit sum divisible by 9. By 11: alternating digits differ between sum of odd- and even-position digits is divisible by 11." },
+          { heading: "Factorials", content: "The factorial of a number n (written as n!) is the product of all positive integers less than or equal to n. For example: 5! = 5 × 4 × 3 × 2 × 1 = 120." }
+        ],
+        examples: [
+          { problem: "Check if 137 is prime.", solution: "Test divisibility up to √137 ≈ 11.7. Check 2 (no), 3 (sum=11, no), 5 (no), 7 (7×19=133, 7×20=140), 11 (11×12=132, 11×13=143). Therefore, 137 is prime." },
+          { problem: "Find the LCM of 12 and 18.", solution: "Multiples of 12: 12, 24, 36, 48... Multiples of 18: 18, 36, 54... LCM = 36." }
+        ]
+      },
+      lcmhcf: {
+        title: "LCM & HCF",
+        icon: "fa-divide",
+        summary: "Least Common Multiple (LCM) and Highest Common Factor (HCF) are fundamental concepts in number theory.",
+        sections: [
+          { heading: "LCM Definition", content: "The Least Common Multiple (LCM) of two or more numbers is the smallest positive integer that is divisible by all of them." },
+          { heading: "HCF Definition", content: "The Highest Common Factor (HCF) is the largest positive integer that divides all the numbers without leaving a remainder." },
+          { heading: "Methods to find LCM", content: "1. Prime factorization method: Find prime factors of each number, take the highest power of each prime factor, multiply them together. 2. Division method: Divide numbers simultaneously by common factors until no common factor remains." },
+          { heading: "Methods to find HCF", content: "1. Prime factorization method: Find common prime factors with lowest powers. 2. Euclid's algorithm: Apply the division algorithm repeatedly." }
+        ],
+        examples: [
+          { problem: "Find HCF and LCM of 24 and 36.", solution: "Prime factors: 24 = 2³ × 3, 36 = 2² × 3². HCF = 2² × 3 = 12. LCM = 2³ × 3² = 72." }
+        ]
+      },
+      algebra: {
+        title: "Algebra",
+        icon: "fa-square-root-variable",
+        summary: "Linear equations, quadratic factoring, and algebraic identities.",
+        sections: [
+          { heading: "Linear Equations", content: "A linear equation is an equation where the highest power of the variable is 1. Example: 2x + 3 = 7." },
+          { heading: "Quadratic Equations", content: "A quadratic equation has degree 2. Standard form: ax² + bx + c = 0." },
+          { heading: "Algebraic Identities", content: "(a+b)² = a² + 2ab + b², (a-b)² = a² - 2ab + b², a² - b² = (a-b)(a+b)." }
+        ],
+        examples: [
+          { problem: "Solve: 3x + 7 = 22", solution: "3x = 15, x = 5." },
+          { problem: "Factor: x² - 9", solution: "x² - 9 = (x-3)(x+3)" }
+        ]
+      },
+      percentage: {
+        title: "Percentage",
+        icon: "fa-percent",
+        summary: "Percentage conversions, increase/decrease, and successive changes.",
+        sections: [
+          { heading: "Definition", content: "A percentage is a number expressed as a fraction of 100. It is denoted by the symbol %." },
+          { heading: "Conversions", content: "To convert a fraction to percentage, multiply by 100. To convert percentage to fraction, divide by 100." },
+          { heading: "Increase/Decrease", content: "Percentage increase = (Increase/Original) × 100%. Percentage decrease = (Decrease/Original) × 100%." }
+        ],
+        examples: [
+          { problem: "What is 25% of 200?", solution: "25% of 200 = (25/100) × 200 = 50." },
+          { problem: "If a price increases from $80 to $100, what is the percentage increase?", solution: "Increase = 20, Percentage increase = (20/80) × 100% = 25%." }
+        ]
+      },
+      ratio: {
+        title: "Ratio & Proportion",
+        icon: "fa-scale-balanced",
+        summary: "Comparing quantities, combining ratios, and dividing amounts proportionally.",
+        sections: [
+          { heading: "Ratio", content: "A ratio compares two quantities of the same kind. It is written as a:b." },
+          { heading: "Proportion", content: "A proportion states that two ratios are equal. For example, a:b = c:d." },
+          { heading: "Properties", content: "In a proportion, product of means = product of extremes (a×d = b×c)." }
+        ],
+        examples: [
+          { problem: "Divide $120 in the ratio 2:3", solution: "Total parts = 5, each part = 120/5 = 24. First share = 2×24 = 48, Second = 3×24 = 72." }
+        ]
+      },
+      timework: {
+        title: "Time & Work",
+        icon: "fa-clock",
+        summary: "Work-rate reasoning for people, machines, and pipes.",
+        sections: [
+          { heading: "Basic Concept", content: "Work done = Rate × Time. If A can do a work in x days, A's one day work = 1/x." },
+          { heading: "Combined Work", content: "If A and B work together, their combined one day work = 1/x + 1/y." },
+          { heading: "Pipes and Cisterns", content: "Inlet pipe fills, outlet pipe empties. Combined rate = Rate(Inlet) - Rate(Outlet)." }
+        ],
+        examples: [
+          { problem: "A can do work in 10 days, B in 15 days. Together in how many days?", solution: "Combined rate = 1/10 + 1/15 = 3/30 + 2/30 = 5/30 = 1/6. Time = 6 days." }
+        ]
+      }
     };
 
     async function openLesson(topic) {
@@ -945,13 +1082,13 @@
         bodyHtml = `
           <div class="text-center py-5">
             <div class="spinner-border" style="color: var(--primary);" role="status"></div>
-            <p class="mt-3 text-muted">Loading notes...</p>
+            <p class="mt-3 text-muted lesson-content-text">Loading notes...</p>
           </div>`;
       } else if (state === "error") {
         bodyHtml = `
           <div class="text-center py-4">
-            <p class="text-muted">${offlineLessonSummaries[topic] || ''}</p>
-            <p class="text-muted"><i class="fa-solid fa-triangle-exclamation"></i>
+            <p class="text-muted lesson-content-text">${offlineLessonSummaries[topic] || ''}</p>
+            <p class="text-muted lesson-content-text"><i class="fa-solid fa-triangle-exclamation"></i>
               Couldn't reach the server for detailed notes. Make sure the backend
               (<code>npm start</code>) and MongoDB are running, then try again.
             </p>
@@ -961,7 +1098,7 @@
           .map(s => `
             <div class="lesson-section mb-3">
               <h6 style="color: var(--primary);">${s.heading}</h6>
-              <p class="text-muted mb-0">${s.content}</p>
+              <p class="text-muted mb-0 lesson-content-text">${s.content}</p>
             </div>`)
           .join("");
 
@@ -969,12 +1106,12 @@
           .map((ex, i) => `
             <div class="lesson-example mb-3 p-3" style="background: rgba(255,255,255,0.04); border-radius: 10px; border-left: 3px solid var(--secondary);">
               <p class="mb-2"><strong>Example ${i + 1}:</strong> ${ex.problem}</p>
-              <p class="mb-0 text-muted"><strong>Solution:</strong> ${ex.solution}</p>
+              <p class="mb-0 text-muted lesson-content-text"><strong>Solution:</strong> ${ex.solution}</p>
             </div>`)
           .join("");
 
         bodyHtml = `
-          <p class="text-muted mb-4">${lesson.summary || ''}</p>
+          <p class="mb-4 lesson-content-text">${lesson.summary || ''}</p>
           ${sectionsHtml}
           ${examplesHtml ? `<h6 class="mt-4 mb-3" style="color: var(--secondary);"><i class="fa-solid fa-pen"></i> Worked Examples</h6>${examplesHtml}` : ''}
         `;
@@ -994,6 +1131,9 @@
               <div class="modal-body">${bodyHtml}</div>
               <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.1);">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="Pdfs/${getPDFFileName(topic)}" target="_blank" class="btn btn-pdf">
+                  <i class="fa-solid fa-file-pdf"></i> Download PDF
+                </a>
                 <a href="test.html?topic=${topic}" class="btn btn-primary">Take Test</a>
               </div>
             </div>
@@ -1005,6 +1145,18 @@
       const modalEl = document.getElementById('lessonModal');
       const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
       modal.show();
+    }
+
+    function getPDFFileName(topic) {
+      const pdfFiles = {
+        numbers: "Number_System_Aptitude_Learning_Notes.pdf",
+        lcmhcf: "LCM_HCF_Aptitude_Complete_Learning_Notes.pdf",
+        algebra: "Algebra_Aptitude_Complete_Learning_Notes.pdf",
+        percentage: "Percentage_Aptitude_Complete_Learning_Notes.pdf",
+        ratio: "Ratio_Proportion_Aptitude_Complete_Learning_Notes.pdf",
+        timework: "Time_and_Work_Aptitude_Complete_Learning_Notes.pdf"
+      };
+      return pdfFiles[topic] || `${topic}_notes.pdf`;
     }
 
     function topicTitle(topic) {
