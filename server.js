@@ -15,7 +15,7 @@ const Lesson = require("./models/Lesson");
 const app = express();
 const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET;
-
+const { requireAuth, requireAdmin } = require("./middleware/auth");
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
@@ -61,14 +61,15 @@ app.post("/api/login", async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: "1h" });
 
     res.json({
-      message: "Login successful",
-      token,
-      username: user.username,
-      userId: user._id
-    });
+  message: "Login successful",
+  token,
+  username: user.username,
+  userId: user._id,
+  role: user.role
+});
   } catch (err) {
     console.error("Login error:", err);
     res.status(500).json({ message: "Server error" });
@@ -119,7 +120,7 @@ app.get("/api/questions/:topic", async (req, res) => {
 });
 
 // Add a new question (used by the admin panel)
-app.post("/api/questions", async (req, res) => {
+app.post("/api/questions", requireAuth, requireAdmin, async (req, res) => {
   const { topic, q, options, correct, explanation } = req.body;
 
   if (!topic || !q || !Array.isArray(options) || options.length < 2 || typeof correct !== "number") {
@@ -137,7 +138,7 @@ app.post("/api/questions", async (req, res) => {
 });
 
 // Delete a question by id (used by the admin panel)
-app.delete("/api/questions/:id", async (req, res) => {
+app.delete("/api/questions/:id", requireAuth, requireAdmin, async (req, res) => {
   try {
     await Question.findByIdAndDelete(req.params.id);
     res.json({ message: "Question deleted" });

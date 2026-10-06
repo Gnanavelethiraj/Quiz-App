@@ -20,13 +20,13 @@
       --light: #f0f4ff;
       --gray: #cfd8e3;
     }
-    
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    
+
     body {
       background: linear-gradient(135deg, var(--dark), var(--darker));
       color: var(--light);
@@ -69,7 +69,7 @@
       overflow: hidden;
       position: relative;
     }
-    
+
     .auth-container::before {
       content: '';
       position: absolute;
@@ -90,7 +90,7 @@
       position: relative;
       overflow: hidden;
     }
-    
+
     .auth-side::before {
       content: '';
       position: absolute;
@@ -101,53 +101,53 @@
       background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%234cafef' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
       animation: float 20s infinite linear;
     }
-    
+
     .auth-content {
       position: relative;
       z-index: 2;
     }
-    
+
     .auth-logo {
       display: flex;
       align-items: center;
       margin-bottom: 30px;
     }
-    
+
     .auth-logo i {
       font-size: 2.5rem;
       color: var(--primary);
       margin-right: 15px;
     }
-    
+
     .auth-logo h1 {
       font-size: 2.2rem;
       font-weight: 700;
       color: var(--primary);
     }
-    
+
     .auth-title {
       font-size: 2rem;
       font-weight: 700;
       margin-bottom: 10px;
       color: var(--light);
     }
-    
+
     .auth-subtitle {
       font-size: 1.1rem;
       color: var(--gray);
       margin-bottom: 30px;
     }
-    
+
     .auth-features {
       margin-top: 30px;
     }
-    
+
     .feature-item {
       display: flex;
       align-items: center;
       margin-bottom: 15px;
     }
-    
+
     .feature-icon {
       width: 40px;
       height: 40px;
@@ -158,12 +158,12 @@
       justify-content: center;
       margin-right: 15px;
     }
-    
+
     .feature-icon i {
       color: var(--primary);
       font-size: 1.2rem;
     }
-    
+
     .feature-text {
       color: var(--gray);
     }
@@ -177,38 +177,38 @@
       flex-direction: column;
       justify-content: center;
     }
-    
+
     .form-container {
       width: 100%;
       max-width: 400px;
       margin: 0 auto;
     }
-    
+
     .form-title {
       font-size: 1.8rem;
       font-weight: 700;
       margin-bottom: 5px;
       color: var(--primary);
     }
-    
+
     .form-subtitle {
       font-size: 1rem;
       color: var(--gray);
       margin-bottom: 30px;
     }
-    
+
     .form-group {
       margin-bottom: 20px;
       position: relative;
     }
-    
+
     .form-label {
       display: block;
       margin-bottom: 8px;
       font-weight: 500;
       color: var(--light);
     }
-    
+
     .form-control {
       width: 100%;
       padding: 14px 15px;
@@ -219,18 +219,18 @@
       font-size: 1rem;
       transition: all 0.3s ease;
     }
-    
+
     .form-control:focus {
       background: rgba(255, 255, 255, 0.12);
       border-color: var(--primary);
       box-shadow: 0 0 0 0.2rem rgba(76, 175, 239, 0.25);
       outline: none;
     }
-    
+
     .form-control::placeholder {
       color: rgba(207, 216, 227, 0.6);
     }
-    
+
     .password-toggle {
       position: absolute;
       right: 15px;
@@ -241,7 +241,7 @@
       cursor: pointer;
       font-size: 1rem;
     }
-    
+
     .btn-auth {
       width: 100%;
       padding: 14px;
@@ -259,19 +259,19 @@
       gap: 10px;
       margin-top: 10px;
     }
-    
+
     .btn-auth:hover {
       transform: translateY(-3px);
       box-shadow: 0 8px 15px rgba(76, 175, 239, 0.4);
       background: linear-gradient(135deg, var(--primary-dark), var(--primary));
     }
-    
+
     .auth-switch {
       text-align: center;
       margin-top: 25px;
       color: var(--gray);
     }
-    
+
     .auth-switch a {
       color: var(--primary);
       text-decoration: none;
@@ -279,11 +279,11 @@
       cursor: pointer;
       transition: all 0.3s ease;
     }
-    
+
     .auth-switch a:hover {
       text-decoration: underline;
     }
-    
+
     .message {
       margin-top: 15px;
       padding: 10px 15px;
@@ -291,25 +291,25 @@
       font-size: 0.9rem;
       text-align: center;
     }
-    
+
     .message.success {
       background: rgba(76, 175, 80, 0.2);
       border: 1px solid var(--success);
       color: var(--success);
     }
-    
+
     .message.error {
       background: rgba(244, 67, 54, 0.2);
       border: 1px solid var(--danger);
       color: var(--danger);
     }
-    
+
     .message.info {
       background: rgba(33, 150, 243, 0.2);
       border: 1px solid var(--primary);
       color: var(--primary);
     }
-    
+
     .hidden {
       display: none;
     }
@@ -319,12 +319,12 @@
       from { opacity: 0; transform: translateY(-20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    
+
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    
+
     @keyframes float {
       0% { transform: translate(0, 0) rotate(0deg); }
       50% { transform: translate(-10px, -10px) rotate(180deg); }
@@ -337,49 +337,49 @@
         flex-direction: column;
         max-width: 500px;
       }
-      
+
       .auth-side {
         padding: 30px 20px;
       }
-      
+
       .form-side {
         padding: 30px 20px;
       }
-      
+
       .auth-logo {
         justify-content: center;
       }
-      
+
       .auth-title {
         text-align: center;
       }
-      
+
       .auth-subtitle {
         text-align: center;
       }
     }
-    
+
     @media (max-width: 480px) {
       body {
         padding: 10px;
       }
-      
+
       .auth-container {
         min-height: auto;
       }
-      
+
       .auth-side {
         padding: 25px 15px;
       }
-      
+
       .form-side {
         padding: 25px 15px;
       }
-      
+
       .auth-logo h1 {
         font-size: 1.8rem;
       }
-      
+
       .auth-title {
         font-size: 1.6rem;
       }
@@ -395,10 +395,10 @@
           <i class="fa-solid fa-graduation-cap"></i>
           <h1>DAAKLE</h1>
         </div>
-        
+
         <h2 class="auth-title">Master Aptitude with DAAKLE</h2>
         <p class="auth-subtitle">Join thousands of students improving their reasoning skills</p>
-        
+
         <div class="auth-features">
           <div class="feature-item">
             <div class="feature-icon">
@@ -427,20 +427,20 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Form Side -->
     <div class="form-side">
       <!-- Login Form -->
       <div class="form-container" id="loginForm">
         <h2 class="form-title">Welcome Back</h2>
         <p class="form-subtitle">Sign in to continue your learning journey</p>
-        
+
         <form id="loginFormElement">
           <div class="form-group">
             <label class="form-label" for="loginEmail">Email Address</label>
             <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email" required>
           </div>
-          
+
           <div class="form-group">
             <label class="form-label" for="loginPassword">Password</label>
             <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password" required>
@@ -448,35 +448,35 @@
               <i class="fa-solid fa-eye"></i>
             </button>
           </div>
-          
+
           <button type="submit" class="btn-auth">
             <i class="fa-solid fa-right-to-bracket"></i> Sign In
           </button>
         </form>
-        
+
         <div class="auth-switch">
           Don't have an account? <a id="switchToSignup">Sign Up</a>
         </div>
-        
+
         <div class="message hidden" id="loginMsg"></div>
       </div>
-      
+
       <!-- Signup Form -->
       <div class="form-container hidden" id="signupForm">
         <h2 class="form-title">Create Account</h2>
         <p class="form-subtitle">Join DAAKLE and start mastering aptitude</p>
-        
+
         <form id="signupFormElement">
           <div class="form-group">
             <label class="form-label" for="signupUsername">Username</label>
             <input type="text" class="form-control" id="signupUsername" placeholder="Choose a username" required>
           </div>
-          
+
           <div class="form-group">
             <label class="form-label" for="signupEmail">Email Address</label>
             <input type="email" class="form-control" id="signupEmail" placeholder="Enter your email" required>
           </div>
-          
+
           <div class="form-group">
             <label class="form-label" for="signupPassword">Password</label>
             <input type="password" class="form-control" id="signupPassword" placeholder="Create a password" required>
@@ -484,7 +484,7 @@
               <i class="fa-solid fa-eye"></i>
             </button>
           </div>
-          
+
           <div class="form-group">
             <label class="form-label" for="signupConfirmPassword">Confirm Password</label>
             <input type="password" class="form-control" id="signupConfirmPassword" placeholder="Confirm your password" required>
@@ -492,23 +492,23 @@
               <i class="fa-solid fa-eye"></i>
             </button>
           </div>
-          
+
           <button type="submit" class="btn-auth">
             <i class="fa-solid fa-user-plus"></i> Create Account
           </button>
         </form>
-        
+
         <div class="auth-switch">
           Already have an account? <a id="switchToLogin">Sign In</a>
         </div>
-        
+
         <div class="message hidden" id="signupMsg"></div>
       </div>
     </div>
   </div>
 
   <script>
-    // API URL (replace with your actual API endpoint)
+    // API URL — relative path, resolves against whatever origin this page is served from
     const API_URL = "/api";
 
     // DOM Elements
@@ -525,11 +525,11 @@
     function setupPasswordToggle(passwordId, toggleId) {
       const passwordInput = document.getElementById(passwordId);
       const toggleButton = document.getElementById(toggleId);
-      
+
       toggleButton.addEventListener('click', function() {
         const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
         passwordInput.setAttribute('type', type);
-        
+
         // Toggle eye icon
         const icon = this.querySelector('i');
         if (type === 'password') {
@@ -575,192 +575,112 @@
       element.classList.remove('hidden');
     }
 
-    // Login function
+    // Login function — talks to the real API only, no demo fallback
     async function login(email, password) {
-      try {
-        // For demo purposes, we'll simulate a successful login
-        // In a real application, you would use the actual API
-        showMessage(loginMsg, 'Logging in...', 'info');
-        
-        // Simulate API call delay
-        setTimeout(async () => {
-          try {
-            // Try actual API first
-            const res = await fetch(`${API_URL}/login`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email, password })
-            });
+      showMessage(loginMsg, 'Logging in...', 'info');
 
-            if (res.ok) {
-              const data = await res.json();
-              showMessage(loginMsg, 'Login successful! Redirecting...', 'success');
-              
-              // Store user data in localStorage
-              localStorage.setItem("token", data.token);
-              localStorage.setItem("username", data.username);
-              localStorage.setItem("email", email);
-              localStorage.setItem("userId", data.userId || 'user-' + Date.now());
-              
-              // Redirect to dashboard after a short delay
-              setTimeout(() => {
-                window.location.href = "index.html";
-              }, 1500);
-            } else {
-              // If API fails, use demo account
-              if (email === 'demo@daakle.com' && password === 'password') {
-                showMessage(loginMsg, 'Login successful! Redirecting...', 'success');
-                
-                // Store user data in localStorage
-                localStorage.setItem("token", "demo-token-12345");
-                localStorage.setItem("username", "Demo User");
-                localStorage.setItem("email", email);
-                localStorage.setItem("userId", "demo-user-12345");
-                
-                // Redirect to dashboard after a short delay
-                setTimeout(() => {
-                  window.location.href = "index.html";
-                }, 1500);
-              } else {
-                showMessage(loginMsg, 'Invalid email or password. Try demo@daakle.com / password', 'error');
-              }
-            }
-          } catch (error) {
-            // If API is not available, use demo account
-            if (email === 'demo@daakle.com' && password === 'password') {
-              showMessage(loginMsg, 'Login successful! Redirecting...', 'success');
-              
-              // Store user data in localStorage
-              localStorage.setItem("token", "demo-token-12345");
-              localStorage.setItem("username", "Demo User");
-              localStorage.setItem("email", email);
-              localStorage.setItem("userId", "demo-user-12345");
-              
-              // Redirect to dashboard after a short delay
-              setTimeout(() => {
-                window.location.href = "index.html";
-              }, 1500);
-            } else {
-              showMessage(loginMsg, 'Invalid email or password. Try demo@daakle.com / password', 'error');
-            }
-          }
-        }, 1000);
-        
+      try {
+        const res = await fetch(`${API_URL}/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if (res.ok) {
+          showMessage(loginMsg, 'Login successful! Redirecting...', 'success');
+
+          // Store real session data from the server's JWT response
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("username", data.username);
+          localStorage.setItem("email", email);
+          localStorage.setItem("userId", data.userId);
+          localStorage.setItem("role", data.role || "user");
+
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 1500);
+        } else {
+          showMessage(loginMsg, data.message || 'Invalid email or password.', 'error');
+        }
       } catch (error) {
         console.error('Login error:', error);
-        showMessage(loginMsg, 'An error occurred during login. Please try again.', 'error');
+        showMessage(loginMsg, 'Unable to reach the server. Please try again.', 'error');
       }
     }
 
-    // Signup function
+    // Signup function — shows the server's real response, success or failure
     async function signup(username, email, password, confirmPassword) {
-      // Validate passwords match
       if (password !== confirmPassword) {
         showMessage(signupMsg, 'Passwords do not match.', 'error');
         return;
       }
-      
-      // Validate password strength (basic)
+
       if (password.length < 6) {
         showMessage(signupMsg, 'Password must be at least 6 characters long.', 'error');
         return;
       }
-      
+
+      showMessage(signupMsg, 'Creating your account...', 'info');
+
       try {
-        showMessage(signupMsg, 'Creating your account...', 'info');
-        
-        // Try actual API first
         const res = await fetch(`${API_URL}/signup`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ username, email, password })
         });
 
+        const data = await res.json().catch(() => ({}));
+
         if (res.ok) {
-          const data = await res.json();
           showMessage(signupMsg, 'Account created successfully! Redirecting to login...', 'success');
-          
-          // Switch to login form after a short delay
+
           setTimeout(() => {
             signupForm.classList.add('hidden');
             loginForm.classList.remove('hidden');
             clearMessages();
-            
-            // Pre-fill the login form with the new credentials
             document.getElementById('loginEmail').value = email;
             document.getElementById('loginPassword').value = password;
           }, 2000);
         } else {
-          // If API fails, simulate successful signup for demo
-          const data = await res.json().catch(() => ({}));
-          showMessage(signupMsg, data.message || 'Account created successfully! Redirecting to login...', 'success');
-          
-          // Switch to login form after a short delay
-          setTimeout(() => {
-            signupForm.classList.add('hidden');
-            loginForm.classList.remove('hidden');
-            clearMessages();
-            
-            // Pre-fill the login form with the new credentials
-            document.getElementById('loginEmail').value = email;
-            document.getElementById('loginPassword').value = password;
-          }, 2000);
+          showMessage(signupMsg, data.message || 'Signup failed. Please try again.', 'error');
         }
-        
       } catch (error) {
         console.error('Signup error:', error);
-        // If API is not available, simulate successful signup for demo
-        showMessage(signupMsg, 'Account created successfully! Redirecting to login...', 'success');
-        
-        // Switch to login form after a short delay
-        setTimeout(() => {
-          signupForm.classList.add('hidden');
-          loginForm.classList.remove('hidden');
-          clearMessages();
-          
-          // Pre-fill the login form with the new credentials
-          document.getElementById('loginEmail').value = email;
-          document.getElementById('loginPassword').value = password;
-        }, 2000);
+        showMessage(signupMsg, 'Unable to reach the server. Please try again.', 'error');
       }
     }
 
     // Form submission handlers
     loginFormElement.addEventListener('submit', function(e) {
       e.preventDefault();
-      
+
       const email = document.getElementById('loginEmail').value;
       const password = document.getElementById('loginPassword').value;
-      
+
       if (!email || !password) {
         showMessage(loginMsg, 'Please fill in all fields.', 'error');
         return;
       }
-      
+
       login(email, password);
     });
 
     signupFormElement.addEventListener('submit', function(e) {
       e.preventDefault();
-      
+
       const username = document.getElementById('signupUsername').value;
       const email = document.getElementById('signupEmail').value;
       const password = document.getElementById('signupPassword').value;
       const confirmPassword = document.getElementById('signupConfirmPassword').value;
-      
+
       if (!username || !email || !password || !confirmPassword) {
         showMessage(signupMsg, 'Please fill in all fields.', 'error');
         return;
       }
-      
-      signup(username, email, password, confirmPassword);
-    });
 
-    // Demo account auto-fill for testing
-    window.addEventListener('load', function() {
-      // Uncomment the following lines to auto-fill demo credentials for testing
-      // document.getElementById('loginEmail').value = 'demo@daakle.com';
-      // document.getElementById('loginPassword').value = 'password';
+      signup(username, email, password, confirmPassword);
     });
   </script>
 </body>

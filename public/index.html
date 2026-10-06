@@ -609,9 +609,18 @@
       </div>
     </div>
   </section>
-  <button class="btn btn-warning" onclick="enableAdminMode()" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
-  <i class="fa-solid fa-shield"></i> Admin Access
-</button>
+
+  <!--
+    Admin access button: removed the old client-side "admin123" prompt.
+    Admin status now comes only from a real login where the account's
+    role (returned by /api/login and stored in localStorage as "role")
+    is "admin". This button is hidden by default and only shown by
+    initUserProfile() below when that's true.
+  -->
+  <a href="test.html" id="adminAccessBtn" class="btn btn-warning"
+     style="display:none; position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+    <i class="fa-solid fa-shield"></i> Admin Panel
+  </a>
 
   <!-- Stats Section -->
   <section class="stats">
@@ -757,6 +766,7 @@
       const navLinks = document.getElementById("navLinks");
       const username = localStorage.getItem("username");
       const email = localStorage.getItem("email");
+      const role = localStorage.getItem("role");
 
       // Remove ALL existing user/login elements to avoid duplicates
       const existingUserItems = document.querySelectorAll('.user-profile-item');
@@ -793,6 +803,14 @@
         loginLi.className = "nav-item user-profile-item";
         loginLi.innerHTML = `<a class="nav-link" href="auth.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a>`;
         navLinks.appendChild(loginLi);
+      }
+
+      // Show the floating Admin Panel button only for accounts whose
+      // role (set by the server at login) is "admin" — never based on
+      // a client-side password prompt.
+      const adminBtn = document.getElementById("adminAccessBtn");
+      if (adminBtn) {
+        adminBtn.style.display = (role === "admin") ? "inline-flex" : "none";
       }
     }
 
@@ -951,39 +969,6 @@
       
       observer.observe(statsSection);
     });
-    // Admin login function (call this from a hidden admin button or page)
-function enableAdminMode() {
-    const password = prompt("Enter admin password:");
-    if (password === "admin123") { // Change this password
-        localStorage.setItem("isAdmin", "true");
-        alert("Admin mode activated!");
-        window.location.href = "test.html";
-    } else {
-        alert("Invalid password!");
-    }
-}
-
-// Or create a simple admin login in home page
-function setupAdminLogin() {
-    // Add a hidden admin button or link in your home page
-    const adminBtn = document.createElement('button');
-    adminBtn.className = 'btn btn-warning btn-sm';
-    adminBtn.innerHTML = '<i class="fa-solid fa-shield"></i> Admin';
-    adminBtn.onclick = enableAdminMode;
-    adminBtn.style.position = 'fixed';
-    adminBtn.style.bottom = '20px';
-    adminBtn.style.right = '20px';
-    adminBtn.style.zIndex = '1000';
-    document.body.appendChild(adminBtn);
-}
-// In index.html or home page
-function enableAdminMode() {
-    const password = prompt("Enter admin password:");
-    if (password === "admin123") {
-        localStorage.setItem("isAdmin", "true");
-        alert("Admin mode activated!");
-    }
-}
   </script>
 </body>
 </html>
